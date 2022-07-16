@@ -35,7 +35,8 @@ public class CourtFeignApiTranslator implements CourtFeignApi {
             JSONObject jsonObject = new JSONObject(response.body().toString())
                 .getJSONObject(LIST_PUBLIC_RESERVATION_SPORT);
             return objectMapper.readValue(
-                jsonObject.getJSONArray("row").toString(), new TypeReference<>() {}
+                jsonObject.getJSONArray("row").toString(), new TypeReference<>() {
+                }
             );
         } catch (IOException e) {
             log.warn("Failed to find list, message is {}", e.getMessage());

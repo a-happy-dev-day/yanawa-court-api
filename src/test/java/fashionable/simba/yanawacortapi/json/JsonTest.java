@@ -2,8 +2,6 @@ package fashionable.simba.yanawacortapi.json;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.assertj.core.api.Assertions;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
@@ -14,7 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class JsonTest {
     private static final String LIST_PUBLIC_RESERVATION_SPORT = "ListPublicReservationSport";
@@ -26,7 +24,8 @@ public class JsonTest {
         String jsonString = new String(Files.readAllBytes(Paths.get("src/test/java/fashionable/simba/yanawacortapi/json/test.json")));
         JSONObject jsonObject = new JSONObject(jsonString).getJSONObject(LIST_PUBLIC_RESERVATION_SPORT);
         List<Court> list = objectMapper.readValue(
-            jsonObject.getJSONArray("row").toString(), new TypeReference<>() {}
+            jsonObject.getJSONArray("row").toString(), new TypeReference<>() {
+            }
         );
 
         assertThat(list.size()).isEqualTo(5);

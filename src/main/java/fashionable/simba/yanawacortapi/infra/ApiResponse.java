@@ -10,7 +10,7 @@ public class ApiResponse {
     @JsonProperty("PLACENM")
     private String placeName;
     @JsonProperty("IMGURL")
-    private String imageUrl;
+    private String imagePath;
 
     public ApiResponse() {
     }
@@ -23,8 +23,8 @@ public class ApiResponse {
         return placeName;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getImagePath() {
+        return imagePath;
     }
 
     @Override
@@ -32,7 +32,7 @@ public class ApiResponse {
         return "Court{" +
             "areaName='" + areaName + '\'' +
             ", placeName='" + placeName + '\'' +
-            ", imageUrl='" + imageUrl + '\'' +
+            ", imagePath='" + imagePath + '\'' +
             '}';
     }
 }

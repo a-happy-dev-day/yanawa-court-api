@@ -1,5 +1,7 @@
-package fashionable.simba.yanawacortapi;
+package fashionable.simba.yanawacortapi.ui;
 
+import fashionable.simba.yanawacortapi.application.CourtApplicationService;
+import fashionable.simba.yanawacortapi.dto.CourtResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +14,12 @@ import java.util.List;
 
 @RestController
 public class CourtController {
+
+    private final CourtApplicationService courtApplicationService;
+
+    public CourtController(CourtApplicationService courtApplicationService) {
+        this.courtApplicationService = courtApplicationService;
+    }
 
     @PostMapping("/v1/api/courts")
     public ResponseEntity<Void> saveCourtList() {

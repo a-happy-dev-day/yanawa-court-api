@@ -4,7 +4,6 @@ import fashionable.simba.yanawacortapi.domain.Court;
 import fashionable.simba.yanawacortapi.domain.CourtService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -21,8 +20,7 @@ public class CourtApplicationService {
         if (!tennisCourtOpenApi.checkApi()) {
             throw new IllegalStateException();
         }
-        List<Court> courts = tennisCourtOpenApi.findCourts();
-        return courtService.saveCourts(courts);
+        return courtService.saveCourts(tennisCourtOpenApi.findCourts());
     }
 
     public Court findCourt(UUID id) {

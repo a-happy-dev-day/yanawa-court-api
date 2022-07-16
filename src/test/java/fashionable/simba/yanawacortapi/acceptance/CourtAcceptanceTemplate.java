@@ -18,10 +18,4 @@ public class CourtAcceptanceTemplate {
             .when().get("/v1/api/courts")
             .then().log().all().extract();
     }
-
-    public static ExtractableResponse<Response> 데이터_목록_조회() {
-        return RestAssured.given().log().all()
-            .when().get("/v1/api/courts")
-            .then().log().all().extract();
-    }
 }

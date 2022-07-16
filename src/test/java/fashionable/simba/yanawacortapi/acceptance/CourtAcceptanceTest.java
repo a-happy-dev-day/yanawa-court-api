@@ -18,23 +18,6 @@ public class CourtAcceptanceTest extends AcceptanceTest {
     private static final String 성동구_응봉공원 = "성동구 응봉공원";
     private static final String NAME = "name";
 
-
-    /**
-     * Given 공공 데이터 API에서 데이터 목록을 조회해 저장하고
-     * Then 목록을 조회합니다.
-     */
-    @Test
-    @DisplayName("공공 데이터 API에서 데이터 목록을 조회해 저장하고 목록을 조회합니다.")
-    void test1() {
-        // given 공공 데이터 API에서 데이터 목록을 조회해 저장하고
-        ExtractableResponse<Response> 데이터_저장 = 데이터_저장();
-        assertThat(데이터_저장.statusCode()).isEqualTo(HttpStatus.CREATED.value());
-
-        // when 목록을 조회합니다.
-        ExtractableResponse<Response> 데이터_목록_조회 = 데이터_목록_조회();
-        assertThat(데이터_목록_조회.statusCode()).isEqualTo(HttpStatus.OK.value());
-    }
-
     /**
      * Given 공공 데이터 API에서 데이터 목록을 조회해 저장하고
      * When & Then 이름을 입력해 데이터를 조회합니다.

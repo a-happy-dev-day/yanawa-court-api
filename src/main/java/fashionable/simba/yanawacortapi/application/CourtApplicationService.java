@@ -9,10 +9,10 @@ import java.util.UUID;
 
 @Service
 public class CourtApplicationService {
-    private final TennisCourtOpenApi tennisCourtOpenApi;
+    private final CourtFeignApi tennisCourtOpenApi;
     private final CourtService courtService;
 
-    public CourtApplicationService(TennisCourtOpenApi tennisCourtOpenApi, CourtService courtService) {
+    public CourtApplicationService(CourtFeignApi tennisCourtOpenApi, CourtService courtService) {
         this.tennisCourtOpenApi = tennisCourtOpenApi;
         this.courtService = courtService;
     }
@@ -21,7 +21,7 @@ public class CourtApplicationService {
         if (!tennisCourtOpenApi.checkApi()) {
             throw new IllegalStateException();
         }
-        List<Court> courts = tennisCourtOpenApi.findCourts(1, 100);
+        List<Court> courts = tennisCourtOpenApi.findCourts();
         return courtService.saveCourts(courts);
     }
 

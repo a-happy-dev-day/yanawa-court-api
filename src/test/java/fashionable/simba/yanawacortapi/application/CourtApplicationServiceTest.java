@@ -19,7 +19,7 @@ import static org.mockito.Mockito.*;
 class CourtApplicationServiceTest {
     private CourtApplicationService courtApplicationService;
     @Mock
-    TennisCourtOpenApi tennisCourtOpenApi;
+    CourtFeignApi tennisCourtOpenApi;
     @Mock
     CourtService courtService;
 
@@ -36,13 +36,13 @@ class CourtApplicationServiceTest {
 
         // when
         when(tennisCourtOpenApi.checkApi()).thenReturn(true);
-        when(tennisCourtOpenApi.findCourts(anyInt(), anyInt())).thenReturn(코트장_리스트);
+        when(tennisCourtOpenApi.findCourts()).thenReturn(코트장_리스트);
         when(courtService.saveCourts(any())).thenReturn(true);
         courtApplicationService.saveCourts();
 
         //then
         verify(tennisCourtOpenApi).checkApi();
-        verify(tennisCourtOpenApi).findCourts(anyInt(), anyInt());
+        verify(tennisCourtOpenApi).findCourts();
         verify(courtService).saveCourts(any());
     }
 
@@ -65,12 +65,12 @@ class CourtApplicationServiceTest {
         List<Court> 코트장_리스트 = List.of(new Court(null, "성동구", "응봉공원", null));
         // when
         when(tennisCourtOpenApi.checkApi()).thenReturn(true);
-        when(tennisCourtOpenApi.findCourts(anyInt(), anyInt())).thenReturn(코트장_리스트);
+        when(tennisCourtOpenApi.findCourts()).thenReturn(코트장_리스트);
         when(courtService.saveCourts(any())).thenReturn(true);
         courtApplicationService.saveCourts();
 
         //then
-        verify(tennisCourtOpenApi).findCourts(anyInt(), anyInt());
+        verify(tennisCourtOpenApi).findCourts();
     }
 
     @Test
@@ -81,7 +81,7 @@ class CourtApplicationServiceTest {
 
         // when
         when(tennisCourtOpenApi.checkApi()).thenReturn(true);
-        when(tennisCourtOpenApi.findCourts(anyInt(), anyInt())).thenReturn(코트장_리스트);
+        when(tennisCourtOpenApi.findCourts()).thenReturn(코트장_리스트);
         when(courtService.saveCourts(any())).thenReturn(true);
         courtApplicationService.saveCourts();
 

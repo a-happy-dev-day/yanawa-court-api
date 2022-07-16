@@ -1,11 +1,13 @@
 package fashionable.simba.yanawacortapi.application;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import fashionable.simba.yanawacortapi.domain.Court;
 
+import java.io.IOException;
 import java.util.List;
 
-public interface TennisCourtOpenApi {
-    List<Court> findCourts(int minNum, int maxNum);
+public interface CourtFeignApi {
+    List<Court> findCourts();
 
     boolean checkApi();
 }

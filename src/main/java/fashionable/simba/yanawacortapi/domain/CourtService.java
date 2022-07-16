@@ -15,7 +15,7 @@ public class CourtService {
         return null;
     }
 
-    public Court findCourt(String params) {
+    public List<Court> findCourt(String params) {
         return null;
     }
 }

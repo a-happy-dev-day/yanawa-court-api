@@ -8,6 +8,5 @@ import java.util.List;
 
 public interface CourtFeignApi {
     List<Court> findCourts();
-
     boolean checkApi();
 }

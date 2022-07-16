@@ -17,6 +17,8 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CourtApplicationServiceTest {
+    private static final Court 코트장 = new Court(UUID.randomUUID(), "성동구", "응봉공원", null);
+
     private CourtApplicationService courtApplicationService;
     @Mock
     CourtFeignApi tennisCourtOpenApi;
@@ -32,7 +34,7 @@ class CourtApplicationServiceTest {
     @DisplayName("공공데이터 Open API에서 정보를 가져오고 도메인 서비스에게 데이터를 저장하도록 요청합니다.")
     void test1() {
         // given
-        List<Court> 코트장_리스트 = List.of(new Court(null, "성동구", "응봉공원", null));
+        List<Court> 코트장_리스트 = List.of(코트장);
 
         // when
         when(tennisCourtOpenApi.checkApi()).thenReturn(true);
@@ -62,7 +64,7 @@ class CourtApplicationServiceTest {
     @Test
     @DisplayName("공공데이터 Open API에서 정보를 가져옵니다.")
     void test3() {
-        List<Court> 코트장_리스트 = List.of(new Court(null, "성동구", "응봉공원", null));
+        List<Court> 코트장_리스트 = List.of(코트장);
         // when
         when(tennisCourtOpenApi.checkApi()).thenReturn(true);
         when(tennisCourtOpenApi.findCourts()).thenReturn(코트장_리스트);
@@ -77,7 +79,7 @@ class CourtApplicationServiceTest {
     @DisplayName("도메인 서비스에게 데이터를 저장하도록 요청합니다.")
     void test5() {
         // given
-        List<Court> 코트장_리스트 = List.of(new Court(null, "성동구", "응봉공원", null));
+        List<Court> 코트장_리스트 = List.of(코트장);
 
         // when
         when(tennisCourtOpenApi.checkApi()).thenReturn(true);
@@ -94,7 +96,7 @@ class CourtApplicationServiceTest {
     void test6() {
         // given
         UUID 코트장_ID = UUID.randomUUID();
-        Court 코트장 = new Court(코트장_ID, "성동구", "응봉공원", null);
+
         // when
         when(courtService.findCourt(코트장_ID)).thenReturn(코트장);
         courtApplicationService.findCourt(코트장_ID);
@@ -108,10 +110,10 @@ class CourtApplicationServiceTest {
     void test7() {
         // given
         String 지역 = "응봉공원";
-        Court 코트 = new Court(UUID.randomUUID(), "성동구", "응봉공원", null);
+        List<Court> 코트장_리스트 = List.of(코트장);
 
         // when
-        when(courtService.findCourt(지역)).thenReturn(코트);
+        when(courtService.findCourt(지역)).thenReturn(코트장_리스트);
         courtApplicationService.findCourt(지역);
 
         // then
@@ -123,10 +125,10 @@ class CourtApplicationServiceTest {
     void test8() {
         // given
         String 지역과이름 = "성동구 응봉공원";
-        Court 코트 = new Court(UUID.randomUUID(), "성동구", "응봉공원", null);
+        List<Court> 코트장_리스트 = List.of(코트장);
 
         // when
-        when(courtService.findCourt(지역과이름)).thenReturn(코트);
+        when(courtService.findCourt(지역과이름)).thenReturn(코트장_리스트);
         courtApplicationService.findCourt(지역과이름);
 
         // then

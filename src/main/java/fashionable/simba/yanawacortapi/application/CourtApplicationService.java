@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Service
 public class CourtApplicationService {
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
+    private static final Logger log = LoggerFactory.getLogger(CourtApplicationService.class);
     private final CourtFeignApi tennisCourtOpenApi;
     private final CourtService courtService;
 
@@ -20,13 +20,13 @@ public class CourtApplicationService {
         this.courtService = courtService;
     }
 
-    public boolean saveCourts() {
+    public void saveCourts() {
         log.debug("Save Courts using CourtFeignClient");
         if (!tennisCourtOpenApi.checkApi()) {
             log.warn("Failed to check Api");
             throw new IllegalStateException();
         }
-        return courtService.saveCourts(tennisCourtOpenApi.findCourts());
+        courtService.saveCourts(tennisCourtOpenApi.findCourts());
     }
 
     public Court findCourt(UUID id) {

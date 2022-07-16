@@ -39,7 +39,6 @@ class CourtApplicationServiceTest {
         // when
         when(tennisCourtOpenApi.checkApi()).thenReturn(true);
         when(tennisCourtOpenApi.findCourts()).thenReturn(코트장_리스트);
-        when(courtService.saveCourts(any())).thenReturn(true);
         courtApplicationService.saveCourts();
 
         //then
@@ -68,7 +67,6 @@ class CourtApplicationServiceTest {
         // when
         when(tennisCourtOpenApi.checkApi()).thenReturn(true);
         when(tennisCourtOpenApi.findCourts()).thenReturn(코트장_리스트);
-        when(courtService.saveCourts(any())).thenReturn(true);
         courtApplicationService.saveCourts();
 
         //then
@@ -84,7 +82,6 @@ class CourtApplicationServiceTest {
         // when
         when(tennisCourtOpenApi.checkApi()).thenReturn(true);
         when(tennisCourtOpenApi.findCourts()).thenReturn(코트장_리스트);
-        when(courtService.saveCourts(any())).thenReturn(true);
         courtApplicationService.saveCourts();
 
         //then

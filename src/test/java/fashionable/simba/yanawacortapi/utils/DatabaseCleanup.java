@@ -7,12 +7,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.DatabaseMetaData;
 import javax.sql.DataSource;
+import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-
 
 
 @Profile("test")

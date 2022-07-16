@@ -10,7 +10,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,17 +32,17 @@ class CourtApplicationServiceTest {
     @DisplayName("공공데이터 Open API에서 정보를 가져오고 도메인 서비스에게 데이터를 저장하도록 요청합니다.")
     void test1() {
         // given
-        List<String> courts = Arrays.asList("courts1", "courts2");
+        List<Court> 코트장_리스트 = List.of(new Court(null, "성동구", "응봉공원", null));
 
         // when
         when(tennisCourtOpenApi.checkApi()).thenReturn(true);
-        when(tennisCourtOpenApi.findCourts()).thenReturn(courts);
+        when(tennisCourtOpenApi.findCourts(anyInt(), anyInt())).thenReturn(코트장_리스트);
         when(courtService.saveCourts(any())).thenReturn(true);
         courtApplicationService.saveCourts();
 
         //then
         verify(tennisCourtOpenApi).checkApi();
-        verify(tennisCourtOpenApi).findCourts();
+        verify(tennisCourtOpenApi).findCourts(anyInt(), anyInt());
         verify(courtService).saveCourts(any());
     }
 
@@ -63,28 +62,26 @@ class CourtApplicationServiceTest {
     @Test
     @DisplayName("공공데이터 Open API에서 정보를 가져옵니다.")
     void test3() {
-        // given
-        List<String> courts = Arrays.asList("courts1", "courts2");
-
+        List<Court> 코트장_리스트 = List.of(new Court(null, "성동구", "응봉공원", null));
         // when
         when(tennisCourtOpenApi.checkApi()).thenReturn(true);
-        when(tennisCourtOpenApi.findCourts()).thenReturn(courts);
+        when(tennisCourtOpenApi.findCourts(anyInt(), anyInt())).thenReturn(코트장_리스트);
         when(courtService.saveCourts(any())).thenReturn(true);
         courtApplicationService.saveCourts();
 
         //then
-        verify(tennisCourtOpenApi).findCourts();
+        verify(tennisCourtOpenApi).findCourts(anyInt(), anyInt());
     }
 
     @Test
     @DisplayName("도메인 서비스에게 데이터를 저장하도록 요청합니다.")
     void test5() {
         // given
-        List<String> courts = Arrays.asList("courts1", "courts2");
+        List<Court> 코트장_리스트 = List.of(new Court(null, "성동구", "응봉공원", null));
 
         // when
         when(tennisCourtOpenApi.checkApi()).thenReturn(true);
-        when(tennisCourtOpenApi.findCourts()).thenReturn(courts);
+        when(tennisCourtOpenApi.findCourts(anyInt(), anyInt())).thenReturn(코트장_리스트);
         when(courtService.saveCourts(any())).thenReturn(true);
         courtApplicationService.saveCourts();
 
@@ -111,10 +108,10 @@ class CourtApplicationServiceTest {
     void test7() {
         // given
         String 지역 = "응봉공원";
-        Court court = new Court(UUID.randomUUID(), "성동구", "응봉공원", null);
+        Court 코트 = new Court(UUID.randomUUID(), "성동구", "응봉공원", null);
 
         // when
-        when(courtService.findCourt(지역)).thenReturn(court);
+        when(courtService.findCourt(지역)).thenReturn(코트);
         courtApplicationService.findCourt(지역);
 
         // then
@@ -126,10 +123,10 @@ class CourtApplicationServiceTest {
     void test8() {
         // given
         String 지역과이름 = "성동구 응봉공원";
-        Court court = new Court(UUID.randomUUID(), "성동구", "응봉공원", null);
+        Court 코트 = new Court(UUID.randomUUID(), "성동구", "응봉공원", null);
 
         // when
-        when(courtService.findCourt(지역과이름)).thenReturn(court);
+        when(courtService.findCourt(지역과이름)).thenReturn(코트);
         courtApplicationService.findCourt(지역과이름);
 
         // then

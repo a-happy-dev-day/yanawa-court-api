@@ -18,15 +18,11 @@ public class CourtApplicationService {
     }
 
     public boolean saveCourts() {
-        if (!tennisCourtOpenApi.checkApi()){
+        if (!tennisCourtOpenApi.checkApi()) {
             throw new IllegalStateException();
         }
-        List<String> courts = tennisCourtOpenApi.findCourts();
-        return courtService.saveCourts(process(courts));
-    }
-
-    private List<Court> process(List<String> courts) {
-        return null;
+        List<Court> courts = tennisCourtOpenApi.findCourts(1, 100);
+        return courtService.saveCourts(courts);
     }
 
     public Court findCourt(UUID id) {

@@ -1,15 +1,17 @@
-package fashionable.simba.yanawacortapi;
+package fashionable.simba.yanawacortapi.dto;
+
+import java.util.UUID;
 
 public class CourtResponse {
-    private Long id;
+    private UUID id;
     private String name;
 
-    public CourtResponse(Long id, String name) {
+    public CourtResponse(UUID id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 

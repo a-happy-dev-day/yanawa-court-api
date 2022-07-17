@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public class CourtController {
     private static final Logger log = LoggerFactory.getLogger(CourtController.class);
     private final CourtApplicationService courtApplicationService;
-    private final Pattern pattern = Pattern.compile("^[가-힣\\s]*$");
+    private static final Pattern pattern = Pattern.compile("^[가-힣\\s]*$");
 
     public CourtController(CourtApplicationService courtApplicationService) {
         this.courtApplicationService = courtApplicationService;

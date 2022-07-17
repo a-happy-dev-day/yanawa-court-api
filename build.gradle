@@ -61,14 +61,6 @@ jacocoTestReport {
         csv.required = false
         html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
     }
-    afterEvaluate {
-        classDirectories.setFrom(files(classDirectories.files.collect {
-            fileTree(dir: it, exclude: [
-                    "fashionable/simba/yanawacortapi/YanawaCortApiApplication.class",
-                    "fashionable/simba/yanawacortapi/infra/CourtFeignClientFallbackFactory.class"
-            ])
-        }))
-    }
     finalizedBy 'jacocoTestCoverageVerification'
 }
 
@@ -83,16 +75,17 @@ jacocoTestCoverageVerification {
             limit {
                 counter = 'LINE'
                 value = 'COVEREDRATIO'
-                minimum = 0.00
+                minimum = 0.90
             }
 
             // 브랜치 커버리지 제한을 90%로 설정
             limit {
                 counter = 'BRANCH'
                 value = 'COVEREDRATIO'
-                minimum = 0.00
+                minimum = 0.90
             }
 
+            excludes = ["*.YanawaCortApiApplication"]
         }
     }
 }

@@ -4,29 +4,38 @@ import fashionable.simba.yanawacortapi.domain.Court;
 import fashionable.simba.yanawacortapi.domain.CourtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
 public class CourtApplicationService {
     private static final Logger log = LoggerFactory.getLogger(CourtApplicationService.class);
+    private static final int MIN_SIZE = 1;
+    private static final int MAX_SIZE = 400;
     private final CourtFeignApiTranslator courtFeignApiTranslator;
     private final CourtService courtService;
+    private final CourtFeignApi courtFeignApi;
 
-    public CourtApplicationService(CourtFeignApiTranslator courtFeignApiTranslator, CourtService courtService) {
+    public CourtApplicationService(CourtFeignApiTranslator courtFeignApiTranslator, CourtService courtService, CourtFeignApi courtFeignApi) {
         this.courtFeignApiTranslator = courtFeignApiTranslator;
         this.courtService = courtService;
+        this.courtFeignApi = courtFeignApi;
     }
 
     public void saveCourts() {
         log.debug("Save Courts using CourtFeignClient");
-        if (!courtFeignApiTranslator.checkApi()) {
+        log.debug("Check api CourtFeignClient");
+        if (!courtFeignApiTranslator.isStatusOk(courtFeignApi.checkApi())) {
             log.warn("Failed to check Api");
             throw new IllegalStateException();
         }
-        courtService.saveCourts(courtFeignApiTranslator.findCourts());
+        ResponseEntity<Map<String, Object>> response = courtFeignApi.findCourts(MIN_SIZE, MAX_SIZE);
+        List<Court> courts = courtFeignApiTranslator.getCourts(response);
+        courtService.saveCourts(courts);
     }
 
     public Court findCourt(UUID id) {

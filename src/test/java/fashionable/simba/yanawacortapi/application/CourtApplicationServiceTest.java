@@ -2,7 +2,6 @@ package fashionable.simba.yanawacortapi.application;
 
 import fashionable.simba.yanawacortapi.domain.Court;
 import fashionable.simba.yanawacortapi.domain.CourtService;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,7 +12,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -25,10 +25,12 @@ class CourtApplicationServiceTest {
     CourtFeignApiTranslator courtFeignApiTranslator;
     @Mock
     CourtService courtService;
+    @Mock
+    CourtFeignApi courtFeignApi;
 
     @BeforeEach
     void setUp() {
-        courtApplicationService = new CourtApplicationService(courtFeignApiTranslator, courtService);
+        courtApplicationService = new CourtApplicationService(courtFeignApiTranslator, courtService, courtFeignApi);
     }
 
     @Test
@@ -38,13 +40,13 @@ class CourtApplicationServiceTest {
         List<Court> 코트장_리스트 = List.of(코트장);
 
         // when
-        when(courtFeignApiTranslator.checkApi()).thenReturn(true);
-        when(courtFeignApiTranslator.findCourts()).thenReturn(코트장_리스트);
+        when(courtFeignApiTranslator.isStatusOk(any())).thenReturn(true);
+        when(courtFeignApiTranslator.getCourts(any())).thenReturn(코트장_리스트);
         courtApplicationService.saveCourts();
 
         //then
-        verify(courtFeignApiTranslator).checkApi();
-        verify(courtFeignApiTranslator).findCourts();
+        verify(courtFeignApiTranslator).isStatusOk(any());
+        verify(courtFeignApiTranslator).getCourts(any());
         verify(courtService).saveCourts(any());
     }
 
@@ -52,7 +54,7 @@ class CourtApplicationServiceTest {
     @DisplayName("공공데이터 Open API의 상태가 false이면 예외가 발생합니다.")
     void test2() {
         // when
-        when(courtFeignApiTranslator.checkApi()).thenReturn(false);
+        when(courtFeignApiTranslator.isStatusOk(any())).thenReturn(false);
 
         // then
         assertThatThrownBy(
@@ -66,12 +68,12 @@ class CourtApplicationServiceTest {
     void test3() {
         List<Court> 코트장_리스트 = List.of(코트장);
         // when
-        when(courtFeignApiTranslator.checkApi()).thenReturn(true);
-        when(courtFeignApiTranslator.findCourts()).thenReturn(코트장_리스트);
+        when(courtFeignApiTranslator.isStatusOk(any())).thenReturn(true);
+        when(courtFeignApiTranslator.getCourts(any())).thenReturn(코트장_리스트);
         courtApplicationService.saveCourts();
 
         //then
-        verify(courtFeignApiTranslator).findCourts();
+        verify(courtFeignApiTranslator).getCourts(any());
     }
 
     @Test
@@ -81,8 +83,8 @@ class CourtApplicationServiceTest {
         List<Court> 코트장_리스트 = List.of(코트장);
 
         // when
-        when(courtFeignApiTranslator.checkApi()).thenReturn(true);
-        when(courtFeignApiTranslator.findCourts()).thenReturn(코트장_리스트);
+        when(courtFeignApiTranslator.isStatusOk(any())).thenReturn(true);
+        when(courtFeignApiTranslator.getCourts(any())).thenReturn(코트장_리스트);
         courtApplicationService.saveCourts();
 
         //then
@@ -156,6 +158,5 @@ class CourtApplicationServiceTest {
         입력값.iterator().forEachRemaining(
             court -> assertThat(결과값).containsExactly(court)
         );
-
     }
 }

@@ -35,7 +35,7 @@ class CourtControllerTest {
     }
 
     @Test
-    @DisplayName("코트장을 저장한다.")
+    @DisplayName("코트장을 저장합니다.")
     void test1() {
         Assertions.assertDoesNotThrow(
             () -> courtController.saveCourtList()
@@ -43,7 +43,7 @@ class CourtControllerTest {
     }
 
     @Test
-    @DisplayName("ID를 입력해 코트장을 조회한다.")
+    @DisplayName("ID를 입력해 코트장을 조회합니다.")
     void test2() {
         // given
         UUID 응봉공원_ID = UUID.randomUUID();
@@ -63,7 +63,7 @@ class CourtControllerTest {
     }
 
     @Test
-    @DisplayName("한글 파라미터 명을 입력해 데이터를 조회한다.")
+    @DisplayName("한글 파라미터 명을 입력해 데이터를 조회합니다.")
     void test3() {
         String 입력값 = "응봉공원";
         UUID 응봉공원_ID = UUID.randomUUID();
@@ -78,7 +78,7 @@ class CourtControllerTest {
     }
 
     @Test
-    @DisplayName("한글 파라미터 명이 아니면 예외가 발생한다.")
+    @DisplayName("한글 파라미터 명이 아니면 예외가 발생합니다.")
     void test5() {
         String 영어_파라미터 = "eungbong";
         assertThatThrownBy(
@@ -87,7 +87,7 @@ class CourtControllerTest {
     }
 
 
-    @DisplayName("파라미터의 값이 null이거나 비어있으면 전체를 조회한다.")
+    @DisplayName("파라미터의 값이 null이거나 비어있으면 전체를 조회합니다.")
     @ParameterizedTest
     @NullAndEmptySource
     void test7(String 입력값) {

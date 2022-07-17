@@ -131,4 +131,10 @@ class CourtApplicationServiceTest {
         // then
         verify(courtService).findCourts(지역과이름);
     }
+
+    @Test
+    @DisplayName("코트장 리스트를 가져옵니다.")
+    void test9() {
+
+    }
 }

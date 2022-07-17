@@ -54,11 +54,7 @@ jacocoTestReport {
 	afterEvaluate {
 		classDirectories.setFrom(files(classDirectories.files.collect {
 			fileTree(dir: it, exclude: [
-					"fashionable/simba/yanawacortapi/dto/*",
-					"fashionable/simba/yanawacortapi/application/CourtFeignApiTranslator.class",
 					"fashionable/simba/yanawacortapi/YanawaCortApiApplication.class",
-					"**/*Exception.*",
-					"**/infra/*"
 			])
 		}))
 	}

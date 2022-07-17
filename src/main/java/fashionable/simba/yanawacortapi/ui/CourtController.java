@@ -10,14 +10,17 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.IllegalFormatCodePointException;
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @RestController
 public class CourtController {
     private static final Logger log = LoggerFactory.getLogger(CourtController.class);
     private final CourtApplicationService courtApplicationService;
+    private final Pattern pattern = Pattern.compile("^[가-힣\\s]*$");
 
     public CourtController(CourtApplicationService courtApplicationService) {
         this.courtApplicationService = courtApplicationService;
@@ -31,19 +34,18 @@ public class CourtController {
     }
 
     @GetMapping("/v1/api/courts")
-    public ResponseEntity<List<CourtResponse>> getCourtsContainsParam(@RequestParam String param) {
-        log.debug("Request to find list, Param is {}", param);
-        return ResponseEntity.ok(courtApplicationService.findCourt(param).stream()
-            .map(
-                court -> new CourtResponse(court.getId(), court.getRegion() + court.getName())
-            ).collect(Collectors.toList())
-        );
-    }
+    public ResponseEntity<List<CourtResponse>> getCourtsContainsParam(@RequestParam(required = false) String param) {
+        if (param == null || param.isBlank()) {
+            throw new IllegalStateException("공백이 들어올 수는 없습니다.");
+        }
 
-    @GetMapping("/v1/api/courts/list")
-    public ResponseEntity<List<CourtResponse>> getCourts() {
-        log.debug("Request to find list");
-        return ResponseEntity.ok(courtApplicationService.findCourt().stream()
+        if (!pattern.matcher(param).matches()) {
+            throw new IllegalArgumentException("입력 값은 한글만 가능합니다.");
+        }
+
+        log.debug("Request to find list, Param is {}", param);
+
+        return ResponseEntity.ok(courtApplicationService.findCourt(param).stream()
             .map(
                 court -> new CourtResponse(court.getId(), court.getRegion() + court.getName())
             ).collect(Collectors.toList())

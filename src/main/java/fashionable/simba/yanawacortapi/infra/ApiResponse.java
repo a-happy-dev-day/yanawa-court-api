@@ -24,12 +24,4 @@ public class ApiResponse {
         return imagePath;
     }
 
-    @Override
-    public String toString() {
-        return "Court{" +
-            "areaName='" + areaName + '\'' +
-            ", placeName='" + placeName + '\'' +
-            ", imagePath='" + imagePath + '\'' +
-            '}';
-    }
 }

@@ -1,5 +1,6 @@
 package fashionable.simba.yanawacortapi.domain;
 
+import fashionable.simba.yanawacortapi.exception.NoCourtDataException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -31,14 +32,14 @@ class CourtServiceTest {
     @DisplayName("코트장 리스트를 저장한다.")
     void test1() {
         // given
-        List<Court> courts = Arrays.asList(
+        List<Court> 코트장_리스트 = Arrays.asList(
             new Court(null, "성동구", "응봉공원", null),
             new Court(null, "양천구", "목동운동장>다목적구장", null)
         );
 
         // when
-        when(courtRepository.saveAll(any())).thenReturn(courts);
-        courtService.saveCourts(courts);
+        when(courtRepository.saveAll(any())).thenReturn(코트장_리스트);
+        courtService.saveCourts(코트장_리스트);
 
         // then
         verify(courtRepository, atLeast(1)).saveAll(any());
@@ -48,7 +49,7 @@ class CourtServiceTest {
     @DisplayName("데이터 스토어에 저장이 실패되면 예외가 발생한다.")
     void test2() {
         // given
-        List<Court> courts = Arrays.asList(
+        List<Court> 코트장_리스트 = Arrays.asList(
             new Court(null, "성동구", "응봉공원", null),
             new Court(null, "양천구", "목동운동장>다목적구장", null)
         );
@@ -58,7 +59,7 @@ class CourtServiceTest {
 
         // then
         Assertions.assertThatThrownBy(
-            () -> courtService.saveCourts(courts)
+            () -> courtService.saveCourts(코트장_리스트)
         ).isInstanceOf(IllegalStateException.class);
     }
 
@@ -66,20 +67,20 @@ class CourtServiceTest {
     @DisplayName("Params으로 코트장을 조회한다.")
     void test3() {
         // given
-        List<Court> courts = Arrays.asList(
+        List<Court> 코트장_리스트 = Arrays.asList(
             new Court(null, "성동구", "응봉공원", null),
             new Court(null, "양천구", "목동운동장>다목적구장", null)
         );
-        String court = "court";
+        String 코트_이름 = "court";
 
         // when
         when(courtRepository.findCourtByAreaNameContainingOrPlaceNameContainingOrderByAreaNameAsc(anyString(), anyString()))
-            .thenReturn(courts);
-        courtService.findCourts(court);
+            .thenReturn(코트장_리스트);
+        courtService.findCourts(코트_이름);
 
         // then
         verify(courtRepository, atLeast(1))
-            .findCourtByAreaNameContainingOrPlaceNameContainingOrderByAreaNameAsc(court, court);
+            .findCourtByAreaNameContainingOrPlaceNameContainingOrderByAreaNameAsc(코트_이름, 코트_이름);
     }
 
     @Test
@@ -100,4 +101,37 @@ class CourtServiceTest {
     }
 
 
+    @Test
+    @DisplayName("코트장 ID에 데이터가 없으면 NoCourtDataException 예외가 발생한다.")
+    void test5() {
+        // given
+        Court 코트장 = new Court(null, "성동구", "응봉공원", null);
+        UUID 코트장_ID = UUID.randomUUID();
+
+        // when
+        when(courtRepository.findById(any()))
+            .thenReturn(Optional.empty());
+
+        // then
+        Assertions.assertThatThrownBy(
+            () -> courtService.findCourt(코트장_ID)
+        ).isInstanceOf(NoCourtDataException.class);
+    }
+
+    @Test
+    @DisplayName("코트장을 전체 조회한다.")
+    void test6() {
+        // given
+        List<Court> 코트장_리스트 = Arrays.asList(
+            new Court(null, "성동구", "응봉공원", null),
+            new Court(null, "양천구", "목동운동장>다목적구장", null)
+        );
+
+        // when
+        when(courtRepository.findAll()).thenReturn(코트장_리스트);
+        courtService.findCourts();
+
+        // then
+        verify(courtRepository, atLeast(1)).findAll();
+    }
 }

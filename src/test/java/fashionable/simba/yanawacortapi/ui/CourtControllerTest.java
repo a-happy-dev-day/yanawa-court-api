@@ -47,7 +47,7 @@ class CourtControllerTest {
     void test2() {
         // given
         UUID 응봉공원_ID = UUID.randomUUID();
-        Court 응봉공원 = new Court(응봉공원_ID, "성동구", "응봉공원", null);
+        Court 응봉공원 = new Court(응봉공원_ID, "성동구", "응봉공원", "image/path");
 
         // when
         when(courtApplicationService.findCourt(응봉공원_ID)).thenReturn(응봉공원);
@@ -57,8 +57,9 @@ class CourtControllerTest {
         Assertions.assertAll(
             () -> assertThat(Objects.requireNonNull(응답.getBody()).getName())
                 .isEqualTo(응봉공원.getAreaName() + " " + 응봉공원.getPlaceName()),
-            () -> assertThat(Objects.requireNonNull(응답.getBody().getId()))
-                .isEqualTo(응봉공원.getId())
+            () -> assertThat(Objects.requireNonNull(Objects.requireNonNull(응답.getBody()).getId()))
+                .isEqualTo(응봉공원.getId()),
+            () -> assertThat(Objects.requireNonNull(응답.getBody()).getImagePath()).isEqualTo(응봉공원.getImagePath())
         );
     }
 

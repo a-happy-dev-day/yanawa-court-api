@@ -8,9 +8,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.sql.SQLDataException;
-import java.sql.SQLException;
-import java.sql.SQLNonTransientException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;

@@ -11,4 +11,6 @@ public interface CourtRepository {
 
     List<Court> findCourtByNameContainingOrRegionContaining(String name, String region);
 
+    List<Court> findAll();
+
 }

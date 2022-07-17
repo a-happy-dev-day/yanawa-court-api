@@ -32,7 +32,11 @@ public class CourtService {
             .orElseThrow(() -> new NoCourtDataException("코트장 정보가 존재하지 않습니다."));
     }
 
-    public List<Court> findCourt(String params) {
+    public List<Court> findCourts(String params) {
         return courtRepository.findCourtByNameContainingOrRegionContaining(params, params);
+    }
+
+    public List<Court> findCourts() {
+        return courtRepository.findAll();
     }
 }

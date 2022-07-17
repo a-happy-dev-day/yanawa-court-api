@@ -1,5 +1,6 @@
 package fashionable.simba.yanawacortapi.domain;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -7,6 +8,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.sql.SQLDataException;
+import java.sql.SQLException;
+import java.sql.SQLNonTransientException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -44,8 +48,26 @@ class CourtServiceTest {
     }
 
     @Test
-    @DisplayName("Params으로 코트장을 조회한다.")
+    @DisplayName("데이터 스토어에 저장이 실패되면 예외가 발생한다.")
     void test2() {
+        // given
+        List<Court> courts = Arrays.asList(
+            new Court(null, "성동구", "응봉공원", null),
+            new Court(null, "양천구", "목동운동장>다목적구장", null)
+        );
+
+        // when
+        when(courtRepository.saveAll(any())).thenThrow(IllegalArgumentException.class);
+
+        // then
+        Assertions.assertThatThrownBy(
+            () -> courtService.saveCourts(courts)
+        ).isInstanceOf(IllegalStateException.class);
+    }
+
+    @Test
+    @DisplayName("Params으로 코트장을 조회한다.")
+    void test3() {
         // given
         List<Court> courts = Arrays.asList(
             new Court(null, "성동구", "응봉공원", null),
@@ -56,7 +78,7 @@ class CourtServiceTest {
         // when
         when(courtRepository.findCourtByNameContainingOrRegionContaining(anyString(), anyString()))
             .thenReturn(courts);
-        courtService.findCourt(court);
+        courtService.findCourts(court);
 
         // then
         verify(courtRepository, atLeast(1))
@@ -65,7 +87,7 @@ class CourtServiceTest {
 
     @Test
     @DisplayName("코트장 ID를 이용해 조회한다.")
-    void test3() {
+    void test4() {
         // given
         Court 코트장 = new Court(null, "성동구", "응봉공원", null);
         UUID 코트장_ID = UUID.randomUUID();
@@ -79,4 +101,6 @@ class CourtServiceTest {
         verify(courtRepository, atLeast(1))
             .findById(코트장_ID);
     }
+
+
 }

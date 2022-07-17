@@ -27,4 +27,20 @@ public class Court {
         this.name = name;
         this.imagePath = imagePath;
     }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
 }

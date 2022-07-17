@@ -110,11 +110,11 @@ class CourtApplicationServiceTest {
         List<Court> 코트장_리스트 = List.of(코트장);
 
         // when
-        when(courtService.findCourt(지역)).thenReturn(코트장_리스트);
+        when(courtService.findCourts(지역)).thenReturn(코트장_리스트);
         courtApplicationService.findCourt(지역);
 
         // then
-        verify(courtService).findCourt(지역);
+        verify(courtService).findCourts(지역);
     }
 
     @Test
@@ -125,10 +125,10 @@ class CourtApplicationServiceTest {
         List<Court> 코트장_리스트 = List.of(코트장);
 
         // when
-        when(courtService.findCourt(지역과이름)).thenReturn(코트장_리스트);
+        when(courtService.findCourts(지역과이름)).thenReturn(코트장_리스트);
         courtApplicationService.findCourt(지역과이름);
 
         // then
-        verify(courtService).findCourt(지역과이름);
+        verify(courtService).findCourts(지역과이름);
     }
 }

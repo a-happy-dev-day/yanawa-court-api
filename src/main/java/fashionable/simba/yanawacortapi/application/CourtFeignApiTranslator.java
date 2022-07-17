@@ -20,6 +20,7 @@ public class CourtFeignApiTranslator implements CourtFeignApi {
     private static final Logger log = LoggerFactory.getLogger(CourtFeignApiTranslator.class);
     private static final int MIN_SIZE = 1;
     private static final int MAX_SIZE = 400;
+    private static final String ROW = "row";
     private final CourtFeignClient courtFeignClient;
     private final ObjectMapper objectMapper;
 
@@ -32,11 +33,8 @@ public class CourtFeignApiTranslator implements CourtFeignApi {
     public List<Court> findCourts() {
         log.debug("Find api using CourtFeignClient");
         try (Response response = courtFeignClient.findCourts(MIN_SIZE, MAX_SIZE)) {
-            JSONObject jsonObject = new JSONObject(response.body().toString())
-                .getJSONObject(LIST_PUBLIC_RESERVATION_SPORT);
             return objectMapper.readValue(
-                jsonObject.getJSONArray("row").toString(), new TypeReference<>() {
-                }
+                getJsonObject(response).getJSONArray(ROW).toString(), new TypeReference<>() {}
             );
         } catch (IOException e) {
             log.warn("Failed to find list, message is {}", e.getMessage());
@@ -48,5 +46,10 @@ public class CourtFeignApiTranslator implements CourtFeignApi {
     public boolean checkApi() {
         log.debug("Check api CourtFeignClient");
         return courtFeignClient.checkApi().status() == HttpStatus.OK.value();
+    }
+
+    private JSONObject getJsonObject(Response response) {
+        return new JSONObject(response.body().toString())
+            .getJSONObject(LIST_PUBLIC_RESERVATION_SPORT);
     }
 }

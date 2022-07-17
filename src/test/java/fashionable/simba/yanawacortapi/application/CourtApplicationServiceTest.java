@@ -13,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import java.util.UUID;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -54,7 +55,7 @@ class CourtApplicationServiceTest {
         when(tennisCourtOpenApi.checkApi()).thenReturn(false);
 
         // then
-        Assertions.assertThatThrownBy(
+        assertThatThrownBy(
             () -> courtApplicationService.saveCourts()
         ).isInstanceOf(IllegalStateException.class);
 
@@ -107,14 +108,18 @@ class CourtApplicationServiceTest {
     void test7() {
         // given
         String 지역 = "응봉공원";
-        List<Court> 코트장_리스트 = List.of(코트장);
+        List<Court> 입력값 = List.of(코트장);
 
         // when
-        when(courtService.findCourts(지역)).thenReturn(코트장_리스트);
-        courtApplicationService.findCourts(지역);
+        when(courtService.findCourts(지역)).thenReturn(입력값);
+        List<Court> 결과값 = courtApplicationService.findCourts(지역);
 
         // then
         verify(courtService).findCourts(지역);
+        assertThat(결과값.size()).isEqualTo(입력값.size());
+        입력값.iterator().forEachRemaining(
+            court -> assertThat(결과값).containsExactly(court)
+        );
     }
 
     @Test
@@ -122,19 +127,36 @@ class CourtApplicationServiceTest {
     void test8() {
         // given
         String 지역과이름 = "성동구 응봉공원";
-        List<Court> 코트장_리스트 = List.of(코트장);
+        List<Court> 입력값 = List.of(코트장);
 
         // when
-        when(courtService.findCourts(지역과이름)).thenReturn(코트장_리스트);
-        courtApplicationService.findCourts(지역과이름);
+        when(courtService.findCourts(지역과이름)).thenReturn(입력값);
+        List<Court> 결과값 = courtApplicationService.findCourts(지역과이름);
 
         // then
         verify(courtService).findCourts(지역과이름);
+        assertThat(결과값.size()).isEqualTo(입력값.size());
+        입력값.iterator().forEachRemaining(
+            court -> assertThat(결과값).containsExactly(court)
+        );
     }
 
     @Test
     @DisplayName("코트장 리스트를 가져옵니다.")
     void test9() {
+        // given
+        String 지역과이름 = "성동구 응봉공원";
+        List<Court> 입력값 = List.of(코트장);
+
+        // when
+        when(courtService.findCourts()).thenReturn(입력값);
+        List<Court> 결과값 = courtApplicationService.findCourts();
+
+        // then
+        assertThat(결과값.size()).isEqualTo(입력값.size());
+        입력값.iterator().forEachRemaining(
+            court -> assertThat(결과값).containsExactly(court)
+        );
 
     }
 }

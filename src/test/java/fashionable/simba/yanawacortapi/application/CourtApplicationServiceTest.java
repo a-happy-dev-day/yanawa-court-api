@@ -111,7 +111,7 @@ class CourtApplicationServiceTest {
 
         // when
         when(courtService.findCourts(지역)).thenReturn(코트장_리스트);
-        courtApplicationService.findCourt(지역);
+        courtApplicationService.findCourts(지역);
 
         // then
         verify(courtService).findCourts(지역);
@@ -126,7 +126,7 @@ class CourtApplicationServiceTest {
 
         // when
         when(courtService.findCourts(지역과이름)).thenReturn(코트장_리스트);
-        courtApplicationService.findCourt(지역과이름);
+        courtApplicationService.findCourts(지역과이름);
 
         // then
         verify(courtService).findCourts(지역과이름);

@@ -32,9 +32,13 @@ public class CourtController {
     }
 
     @GetMapping("/v1/api/courts")
-    public ResponseEntity<List<CourtResponse>> getCourtsContainsParam(@RequestParam(required = false) String param) {
+    public ResponseEntity<List<CourtResponse>> getCourtsContainsParam(@RequestParam(required = false, defaultValue = "") String param) {
         if (param == null || param.isBlank()) {
-            throw new IllegalStateException("공백이 들어올 수는 없습니다.");
+            return ResponseEntity.ok(courtApplicationService.findCourts().stream()
+                .map(
+                    court -> new CourtResponse(court.getId(), court.getRegion() + court.getName())
+                ).collect(Collectors.toList())
+            );
         }
 
         if (!pattern.matcher(param).matches()) {
@@ -43,7 +47,7 @@ public class CourtController {
 
         log.debug("Request to find list, Param is {}", param);
 
-        return ResponseEntity.ok(courtApplicationService.findCourt(param).stream()
+        return ResponseEntity.ok(courtApplicationService.findCourts(param).stream()
             .map(
                 court -> new CourtResponse(court.getId(), court.getRegion() + court.getName())
             ).collect(Collectors.toList())
@@ -54,6 +58,8 @@ public class CourtController {
     public ResponseEntity<CourtResponse> getCourt(@PathVariable UUID id) {
         log.debug("Request to find list, Id is {}", id);
         Court court = courtApplicationService.findCourt(id);
-        return ResponseEntity.ok(new CourtResponse(court.getId(), court.getRegion() + court.getName()));
+        return ResponseEntity.ok(
+            new CourtResponse(court.getId(), String.format("%s %s", court.getRegion(), court.getName()))
+        );
     }
 }

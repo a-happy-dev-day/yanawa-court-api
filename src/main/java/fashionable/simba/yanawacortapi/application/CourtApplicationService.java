@@ -34,12 +34,12 @@ public class CourtApplicationService {
         return courtService.findCourt(id);
     }
 
-    public List<Court> findCourt(String params) {
+    public List<Court> findCourts(String params) {
         log.debug("Find Courts Id, Param is {}", params);
         return courtService.findCourts(params);
     }
 
-    public List<Court> findCourt() {
+    public List<Court> findCourts() {
         return courtService.findCourts();
     }
 }

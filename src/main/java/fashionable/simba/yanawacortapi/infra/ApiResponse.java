@@ -12,9 +12,6 @@ public class ApiResponse {
     @JsonProperty("IMGURL")
     private String imagePath;
 
-    public ApiResponse() {
-    }
-
     public String getAreaName() {
         return areaName;
     }

@@ -34,7 +34,7 @@ public class CourtService {
     }
 
     public List<Court> findCourts(String params) {
-        return courtRepository.findCourtByNameContainingOrRegionContaining(params, params);
+        return courtRepository.findCourtByAreaNameContainingOrPlaceNameContainingOrderByAreaNameAsc(params, params);
     }
 
     public List<Court> findCourts() {

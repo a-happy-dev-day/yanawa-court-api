@@ -1,10 +1,12 @@
 package fashionable.simba.yanawacortapi.infra;
 
-import feign.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.openfeign.FallbackFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+
+import java.util.Map;
 
 @Component
 public class CourtFeignClientFallbackFactory implements FallbackFactory<CourtFeignClient> {
@@ -15,13 +17,13 @@ public class CourtFeignClientFallbackFactory implements FallbackFactory<CourtFei
 
         return new CourtFeignClient() {
             @Override
-            public Response checkApi() {
+            public ResponseEntity<Void> checkApi() {
                 log.warn("Access failed using court feign client");
                 throw new IllegalStateException("Access failed feign client");
             }
 
             @Override
-            public Response findCourts(int minNum, int maxNum) {
+            public ResponseEntity<Map<String, Object>> findCourts(int minNum, int maxNum) {
                 log.warn("Failed to get list using court feign client [{}][{}]", minNum, maxNum);
                 throw new IllegalStateException("Access failed feign client");
             }

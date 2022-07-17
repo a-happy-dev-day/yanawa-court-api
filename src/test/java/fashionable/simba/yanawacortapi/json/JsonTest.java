@@ -24,8 +24,8 @@ public class JsonTest {
         String jsonString = new String(Files.readAllBytes(Paths.get("src/test/java/fashionable/simba/yanawacortapi/json/test.json")));
         JSONObject jsonObject = new JSONObject(jsonString).getJSONObject(LIST_PUBLIC_RESERVATION_SPORT);
         List<Court> list = objectMapper.readValue(
-            jsonObject.getJSONArray("row").toString(), new TypeReference<>() {
-            }
+            jsonObject.getJSONArray("row").toString(),
+            new TypeReference<>() {}
         );
 
         assertThat(list.size()).isEqualTo(5);

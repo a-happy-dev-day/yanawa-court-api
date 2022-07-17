@@ -22,13 +22,13 @@ class CourtApplicationServiceTest {
 
     private CourtApplicationService courtApplicationService;
     @Mock
-    CourtFeignApi tennisCourtOpenApi;
+    CourtFeignApiTranslator courtFeignApiTranslator;
     @Mock
     CourtService courtService;
 
     @BeforeEach
     void setUp() {
-        courtApplicationService = new CourtApplicationService(tennisCourtOpenApi, courtService);
+        courtApplicationService = new CourtApplicationService(courtFeignApiTranslator, courtService);
     }
 
     @Test
@@ -38,13 +38,13 @@ class CourtApplicationServiceTest {
         List<Court> 코트장_리스트 = List.of(코트장);
 
         // when
-        when(tennisCourtOpenApi.checkApi()).thenReturn(true);
-        when(tennisCourtOpenApi.findCourts()).thenReturn(코트장_리스트);
+        when(courtFeignApiTranslator.checkApi()).thenReturn(true);
+        when(courtFeignApiTranslator.findCourts()).thenReturn(코트장_리스트);
         courtApplicationService.saveCourts();
 
         //then
-        verify(tennisCourtOpenApi).checkApi();
-        verify(tennisCourtOpenApi).findCourts();
+        verify(courtFeignApiTranslator).checkApi();
+        verify(courtFeignApiTranslator).findCourts();
         verify(courtService).saveCourts(any());
     }
 
@@ -52,7 +52,7 @@ class CourtApplicationServiceTest {
     @DisplayName("공공데이터 Open API의 상태가 false이면 예외가 발생합니다.")
     void test2() {
         // when
-        when(tennisCourtOpenApi.checkApi()).thenReturn(false);
+        when(courtFeignApiTranslator.checkApi()).thenReturn(false);
 
         // then
         assertThatThrownBy(
@@ -66,12 +66,12 @@ class CourtApplicationServiceTest {
     void test3() {
         List<Court> 코트장_리스트 = List.of(코트장);
         // when
-        when(tennisCourtOpenApi.checkApi()).thenReturn(true);
-        when(tennisCourtOpenApi.findCourts()).thenReturn(코트장_리스트);
+        when(courtFeignApiTranslator.checkApi()).thenReturn(true);
+        when(courtFeignApiTranslator.findCourts()).thenReturn(코트장_리스트);
         courtApplicationService.saveCourts();
 
         //then
-        verify(tennisCourtOpenApi).findCourts();
+        verify(courtFeignApiTranslator).findCourts();
     }
 
     @Test
@@ -81,8 +81,8 @@ class CourtApplicationServiceTest {
         List<Court> 코트장_리스트 = List.of(코트장);
 
         // when
-        when(tennisCourtOpenApi.checkApi()).thenReturn(true);
-        when(tennisCourtOpenApi.findCourts()).thenReturn(코트장_리스트);
+        when(courtFeignApiTranslator.checkApi()).thenReturn(true);
+        when(courtFeignApiTranslator.findCourts()).thenReturn(코트장_리스트);
         courtApplicationService.saveCourts();
 
         //then
@@ -145,7 +145,6 @@ class CourtApplicationServiceTest {
     @DisplayName("코트장 리스트를 가져옵니다.")
     void test9() {
         // given
-        String 지역과이름 = "성동구 응봉공원";
         List<Court> 입력값 = List.of(코트장);
 
         // when

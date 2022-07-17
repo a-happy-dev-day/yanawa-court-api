@@ -1,11 +1,11 @@
 package fashionable.simba.yanawacortapi.application;
 
-import fashionable.simba.yanawacortapi.domain.Court;
+import org.springframework.http.ResponseEntity;
 
-import java.util.List;
+import java.util.Map;
 
 public interface CourtFeignApi {
-    List<Court> findCourts();
+    ResponseEntity<Void> checkApi();
 
-    boolean checkApi();
+    ResponseEntity<Map<String, Object>> findCourts(int minNum, int maxNum);
 }

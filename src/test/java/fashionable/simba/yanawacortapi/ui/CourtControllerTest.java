@@ -56,7 +56,7 @@ class CourtControllerTest {
         // then
         Assertions.assertAll(
             () -> assertThat(Objects.requireNonNull(응답.getBody()).getName())
-                .isEqualTo(응봉공원.getRegion() + " " + 응봉공원.getName()),
+                .isEqualTo(응봉공원.getAreaName() + " " + 응봉공원.getPlaceName()),
             () -> assertThat(Objects.requireNonNull(응답.getBody().getId()))
                 .isEqualTo(응봉공원.getId())
         );

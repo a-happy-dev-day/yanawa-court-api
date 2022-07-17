@@ -15,16 +15,16 @@ public class Court {
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @Column(columnDefinition = "BINARY(16)")
     private UUID id;
-    private String region;
-    private String name;
+    private String areaName;
+    private String placeName;
     private String imagePath;
 
     protected Court() {/*no-op*/}
 
-    public Court(UUID id, String region, String name, String imagePath) {
+    public Court(UUID id, String areaName, String placeName, String imagePath) {
         this.id = id;
-        this.region = region;
-        this.name = name;
+        this.areaName = areaName;
+        this.placeName = placeName;
         this.imagePath = imagePath;
     }
 
@@ -32,12 +32,12 @@ public class Court {
         return id;
     }
 
-    public String getRegion() {
-        return region;
+    public String getAreaName() {
+        return areaName;
     }
 
-    public String getName() {
-        return name;
+    public String getPlaceName() {
+        return placeName;
     }
 
     public String getImagePath() {

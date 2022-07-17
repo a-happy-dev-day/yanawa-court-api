@@ -73,13 +73,13 @@ class CourtServiceTest {
         String court = "court";
 
         // when
-        when(courtRepository.findCourtByNameContainingOrRegionContaining(anyString(), anyString()))
+        when(courtRepository.findCourtByAreaNameContainingOrPlaceNameContainingOrderByAreaNameAsc(anyString(), anyString()))
             .thenReturn(courts);
         courtService.findCourts(court);
 
         // then
         verify(courtRepository, atLeast(1))
-            .findCourtByNameContainingOrRegionContaining(court, court);
+            .findCourtByAreaNameContainingOrPlaceNameContainingOrderByAreaNameAsc(court, court);
     }
 
     @Test

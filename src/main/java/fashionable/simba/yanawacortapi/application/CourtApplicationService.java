@@ -12,21 +12,21 @@ import java.util.UUID;
 @Service
 public class CourtApplicationService {
     private static final Logger log = LoggerFactory.getLogger(CourtApplicationService.class);
-    private final CourtFeignApi tennisCourtOpenApi;
+    private final CourtFeignApiTranslator courtFeignApiTranslator;
     private final CourtService courtService;
 
-    public CourtApplicationService(CourtFeignApi tennisCourtOpenApi, CourtService courtService) {
-        this.tennisCourtOpenApi = tennisCourtOpenApi;
+    public CourtApplicationService(CourtFeignApiTranslator courtFeignApiTranslator, CourtService courtService) {
+        this.courtFeignApiTranslator = courtFeignApiTranslator;
         this.courtService = courtService;
     }
 
     public void saveCourts() {
         log.debug("Save Courts using CourtFeignClient");
-        if (!tennisCourtOpenApi.checkApi()) {
+        if (!courtFeignApiTranslator.checkApi()) {
             log.warn("Failed to check Api");
             throw new IllegalStateException();
         }
-        courtService.saveCourts(tennisCourtOpenApi.findCourts());
+        courtService.saveCourts(courtFeignApiTranslator.findCourts());
     }
 
     public Court findCourt(UUID id) {

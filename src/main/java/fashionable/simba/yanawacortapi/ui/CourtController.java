@@ -36,7 +36,7 @@ public class CourtController {
         if (param == null || param.isBlank()) {
             return ResponseEntity.ok(courtApplicationService.findCourts().stream()
                 .map(
-                    court -> new CourtResponse(court.getId(), court.getRegion() + court.getName())
+                    court -> new CourtResponse(court.getId(), court.getAreaName() + court.getPlaceName())
                 ).collect(Collectors.toList())
             );
         }
@@ -49,7 +49,7 @@ public class CourtController {
 
         return ResponseEntity.ok(courtApplicationService.findCourts(param).stream()
             .map(
-                court -> new CourtResponse(court.getId(), court.getRegion() + court.getName())
+                court -> new CourtResponse(court.getId(), court.getAreaName() + court.getPlaceName())
             ).collect(Collectors.toList())
         );
     }
@@ -59,7 +59,7 @@ public class CourtController {
         log.debug("Request to find list, Id is {}", id);
         Court court = courtApplicationService.findCourt(id);
         return ResponseEntity.ok(
-            new CourtResponse(court.getId(), String.format("%s %s", court.getRegion(), court.getName()))
+            new CourtResponse(court.getId(), String.format("%s %s", court.getAreaName(), court.getPlaceName()))
         );
     }
 }

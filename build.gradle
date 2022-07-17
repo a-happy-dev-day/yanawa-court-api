@@ -27,6 +27,7 @@ dependencies {
     runtimeOnly 'com.h2database:h2'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.rest-assured:rest-assured:4.2.0'
+    testImplementation 'org.springframework.cloud:spring-cloud-contract-wiremock'
 }
 
 dependencyManagement {

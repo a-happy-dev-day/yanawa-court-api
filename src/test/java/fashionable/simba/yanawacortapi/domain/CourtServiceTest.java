@@ -78,7 +78,7 @@ class CourtServiceTest {
         // when
         when(courtRepository.findCourtByNameContainingOrRegionContaining(anyString(), anyString()))
             .thenReturn(courts);
-        courtService.findCourt(court);
+        courtService.findCourts(court);
 
         // then
         verify(courtRepository, atLeast(1))

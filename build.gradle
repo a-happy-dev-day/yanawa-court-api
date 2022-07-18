@@ -41,8 +41,9 @@ sonarqube {
         property "sonar.projectKey", "a-happy-dev-day_yanawa-court-api"
         property "sonar.organization", "a-happy-dev-day"
         property "sonar.host.url", "https://sonarcloud.io"
+        property "sonar.login", "9e1dfb8311019f8d9607d2f8dc68a8c8b264e812"
         // jacoco 에서 생성된 xml 을 report 로 올리기 위한 설정
-        property "sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco.xml"
+        property "sonar.coverage.jacoco.xmlReportPaths", "build/jacoco/test/jacocoTestReport.xml"
     }
 }
 
@@ -54,12 +55,12 @@ test {
 
 jacoco {
     toolVersion = "0.8.7"
-    reportsDirectory = layout.buildDirectory.dir('jacocoDir')
+    reportsDirectory = layout.buildDirectory.dir('jacoco')
 }
 
 jacocoTestReport {
     reports {
-        xml.required = false
+        xml.required = true
         csv.required = false
         html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
     }

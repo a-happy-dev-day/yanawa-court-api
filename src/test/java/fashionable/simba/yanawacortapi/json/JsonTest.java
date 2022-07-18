@@ -25,7 +25,8 @@ public class JsonTest {
         JSONObject jsonObject = new JSONObject(jsonString).getJSONObject(LIST_PUBLIC_RESERVATION_SPORT);
         List<Court> list = objectMapper.readValue(
             jsonObject.getJSONArray("row").toString(),
-            new TypeReference<>() {}
+            new TypeReference<>() {
+            }
         );
 
         assertThat(list.size()).isEqualTo(5);

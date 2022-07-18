@@ -23,6 +23,4 @@ class FeignClientTest {
         assertThat(데이터_조회.body().jsonPath().getList("ListPublicReservationSport.row.PLACENM").size())
             .isEqualTo(데이터_조회.body().jsonPath().getInt("ListPublicReservationSport.list_total_count"));
     }
-
-
 }

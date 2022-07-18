@@ -28,8 +28,6 @@ class SpringCourtFeignApiTranslatorTest {
         courtFeignApiTranslator = new CourtFeignApiTranslator(objectMapper);
     }
 
-    // TODO : CourtFeignApiTranslatorTest 작성하기
-
     @Test
     @DisplayName("API 헬스 체크를 합니다.")
     void test1() {
@@ -49,6 +47,6 @@ class SpringCourtFeignApiTranslatorTest {
     @Test
     @DisplayName("API의 상태가 OK가 아니면 false를 리턴합니다.")
     void test4() {
-        courtFeignApiTranslator.isStatusOk(ResponseEntity.badRequest().build());
+        assertThat(courtFeignApiTranslator.isStatusOk(ResponseEntity.badRequest().build())).isFalse();
     }
 }

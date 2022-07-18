@@ -22,13 +22,6 @@ class ApiResponseTest {
     }
 
     @Test
-    @DisplayName("같은 객체끼리 비교하면 True이다.")
-    void test2() {
-        // when & then
-        assertThat(성동구_응봉공원).isEqualTo(성동구_응봉공원);
-    }
-
-    @Test
     @DisplayName("placeName과 AreaName이 같다면 True이다.")
     void test3() {
         // when & then

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -43,7 +44,7 @@ public class CourtFeignApiTranslator {
                 new TypeReference<>() {
                 }
             );
-            return apiResponses.stream().map(apiResponse -> new Court(null, apiResponse.getAreaName(), apiResponse.getPlaceName(), apiResponse.getImagePath())).collect(Collectors.toList());
+            return apiResponses.stream().distinct().map(apiResponse -> new Court(null, apiResponse.getAreaName(), apiResponse.getPlaceName(), apiResponse.getImagePath())).collect(Collectors.toList());
         } catch (Exception e) {
             log.warn("Failed to find list, message is {}", e.getMessage());
             throw new IllegalArgumentException();

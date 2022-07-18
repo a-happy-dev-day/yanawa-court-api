@@ -27,6 +27,7 @@ dependencies {
     runtimeOnly 'com.h2database:h2'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.rest-assured:rest-assured:4.2.0'
+    testImplementation 'org.springframework.cloud:spring-cloud-contract-wiremock'
 }
 
 dependencyManagement {
@@ -60,13 +61,6 @@ jacocoTestReport {
         csv.required = false
         html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
     }
-    afterEvaluate {
-        classDirectories.setFrom(files(classDirectories.files.collect {
-            fileTree(dir: it, exclude: [
-                    "fashionable/simba/yanawacortapi/YanawaCortApiApplication.class",
-            ])
-        }))
-    }
     finalizedBy 'jacocoTestCoverageVerification'
 }
 
@@ -81,16 +75,17 @@ jacocoTestCoverageVerification {
             limit {
                 counter = 'LINE'
                 value = 'COVEREDRATIO'
-                minimum = 0.00
+                minimum = 0.90
             }
 
             // 브랜치 커버리지 제한을 90%로 설정
             limit {
                 counter = 'BRANCH'
                 value = 'COVEREDRATIO'
-                minimum = 0.00
+                minimum = 0.90
             }
 
+            excludes = ["*.YanawaCortApiApplication"]
         }
     }
 }

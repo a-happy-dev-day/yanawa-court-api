@@ -17,7 +17,7 @@ public interface JpaCourtRepository extends JpaRepository<Court, Long>, CourtRep
     @Override
     Optional<Court> findById(UUID aLong);
 
-    List<Court> findCourtByNameContainingOrRegionContaining(String name, String region);
+    List<Court> findCourtByAreaNameContainingOrPlaceNameContainingOrderByAreaNameAsc(String name, String region);
 
     @Override
     List<Court> findAll();

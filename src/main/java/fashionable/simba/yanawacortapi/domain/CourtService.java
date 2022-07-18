@@ -1,5 +1,6 @@
 package fashionable.simba.yanawacortapi.domain;
 
+import fashionable.simba.yanawacortapi.exception.NoCourtDataException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -17,10 +18,10 @@ public class CourtService {
         this.courtRepository = courtRepository;
     }
 
-    public void saveCourts(List<Court> courts) {
+    public List<Court> saveCourts(List<Court> courts) {
         log.debug("Save court in Repository");
         try {
-            courtRepository.saveAll(courts);
+            return courtRepository.saveAll(courts);
         } catch (Exception e) {
             log.debug("Failed to save court in Repository, Message is {}", e.getMessage());
             throw new IllegalStateException("저장에 실패했습니다.");
@@ -33,7 +34,7 @@ public class CourtService {
     }
 
     public List<Court> findCourts(String params) {
-        return courtRepository.findCourtByNameContainingOrRegionContaining(params, params);
+        return courtRepository.findCourtByAreaNameContainingOrPlaceNameContainingOrderByAreaNameAsc(params, params);
     }
 
     public List<Court> findCourts() {

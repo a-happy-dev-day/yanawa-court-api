@@ -9,7 +9,7 @@ public interface CourtRepository {
 
     Optional<Court> findById(UUID aLong);
 
-    List<Court> findCourtByNameContainingOrRegionContaining(String name, String region);
+    List<Court> findCourtByAreaNameContainingOrPlaceNameContainingOrderByAreaNameAsc(String name, String region);
 
     List<Court> findAll();
 

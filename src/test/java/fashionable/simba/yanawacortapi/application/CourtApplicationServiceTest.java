@@ -2,7 +2,6 @@ package fashionable.simba.yanawacortapi.application;
 
 import fashionable.simba.yanawacortapi.domain.Court;
 import fashionable.simba.yanawacortapi.domain.CourtService;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,6 +12,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import java.util.UUID;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -21,13 +22,15 @@ class CourtApplicationServiceTest {
 
     private CourtApplicationService courtApplicationService;
     @Mock
-    CourtFeignApi tennisCourtOpenApi;
+    CourtFeignApiTranslator courtFeignApiTranslator;
     @Mock
     CourtService courtService;
+    @Mock
+    CourtFeignApi courtFeignApi;
 
     @BeforeEach
     void setUp() {
-        courtApplicationService = new CourtApplicationService(tennisCourtOpenApi, courtService);
+        courtApplicationService = new CourtApplicationService(courtFeignApiTranslator, courtService, courtFeignApi);
     }
 
     @Test
@@ -37,13 +40,13 @@ class CourtApplicationServiceTest {
         List<Court> 코트장_리스트 = List.of(코트장);
 
         // when
-        when(tennisCourtOpenApi.checkApi()).thenReturn(true);
-        when(tennisCourtOpenApi.findCourts()).thenReturn(코트장_리스트);
+        when(courtFeignApiTranslator.isStatusOk(any())).thenReturn(true);
+        when(courtFeignApiTranslator.getCourts(any())).thenReturn(코트장_리스트);
         courtApplicationService.saveCourts();
 
         //then
-        verify(tennisCourtOpenApi).checkApi();
-        verify(tennisCourtOpenApi).findCourts();
+        verify(courtFeignApiTranslator).isStatusOk(any());
+        verify(courtFeignApiTranslator).getCourts(any());
         verify(courtService).saveCourts(any());
     }
 
@@ -51,10 +54,10 @@ class CourtApplicationServiceTest {
     @DisplayName("공공데이터 Open API의 상태가 false이면 예외가 발생합니다.")
     void test2() {
         // when
-        when(tennisCourtOpenApi.checkApi()).thenReturn(false);
+        when(courtFeignApiTranslator.isStatusOk(any())).thenReturn(false);
 
         // then
-        Assertions.assertThatThrownBy(
+        assertThatThrownBy(
             () -> courtApplicationService.saveCourts()
         ).isInstanceOf(IllegalStateException.class);
 
@@ -65,12 +68,12 @@ class CourtApplicationServiceTest {
     void test3() {
         List<Court> 코트장_리스트 = List.of(코트장);
         // when
-        when(tennisCourtOpenApi.checkApi()).thenReturn(true);
-        when(tennisCourtOpenApi.findCourts()).thenReturn(코트장_리스트);
+        when(courtFeignApiTranslator.isStatusOk(any())).thenReturn(true);
+        when(courtFeignApiTranslator.getCourts(any())).thenReturn(코트장_리스트);
         courtApplicationService.saveCourts();
 
         //then
-        verify(tennisCourtOpenApi).findCourts();
+        verify(courtFeignApiTranslator).getCourts(any());
     }
 
     @Test
@@ -80,8 +83,8 @@ class CourtApplicationServiceTest {
         List<Court> 코트장_리스트 = List.of(코트장);
 
         // when
-        when(tennisCourtOpenApi.checkApi()).thenReturn(true);
-        when(tennisCourtOpenApi.findCourts()).thenReturn(코트장_리스트);
+        when(courtFeignApiTranslator.isStatusOk(any())).thenReturn(true);
+        when(courtFeignApiTranslator.getCourts(any())).thenReturn(코트장_리스트);
         courtApplicationService.saveCourts();
 
         //then
@@ -107,14 +110,18 @@ class CourtApplicationServiceTest {
     void test7() {
         // given
         String 지역 = "응봉공원";
-        List<Court> 코트장_리스트 = List.of(코트장);
+        List<Court> 입력값 = List.of(코트장);
 
         // when
-        when(courtService.findCourts(지역)).thenReturn(코트장_리스트);
-        courtApplicationService.findCourt(지역);
+        when(courtService.findCourts(지역)).thenReturn(입력값);
+        List<Court> 결과값 = courtApplicationService.findCourts(지역);
 
         // then
         verify(courtService).findCourts(지역);
+        assertThat(결과값).hasSameSizeAs(입력값);
+        입력값.iterator().forEachRemaining(
+            court -> assertThat(결과값).containsExactly(court)
+        );
     }
 
     @Test
@@ -122,13 +129,34 @@ class CourtApplicationServiceTest {
     void test8() {
         // given
         String 지역과이름 = "성동구 응봉공원";
-        List<Court> 코트장_리스트 = List.of(코트장);
+        List<Court> 입력값 = List.of(코트장);
 
         // when
-        when(courtService.findCourts(지역과이름)).thenReturn(코트장_리스트);
-        courtApplicationService.findCourt(지역과이름);
+        when(courtService.findCourts(지역과이름)).thenReturn(입력값);
+        List<Court> 결과값 = courtApplicationService.findCourts(지역과이름);
 
         // then
         verify(courtService).findCourts(지역과이름);
+        assertThat(결과값).hasSameSizeAs(입력값);
+        입력값.iterator().forEachRemaining(
+            court -> assertThat(결과값).containsExactly(court)
+        );
+    }
+
+    @Test
+    @DisplayName("코트장 리스트를 가져옵니다.")
+    void test9() {
+        // given
+        List<Court> 입력값 = List.of(코트장);
+
+        // when
+        when(courtService.findCourts()).thenReturn(입력값);
+        List<Court> 결과값 = courtApplicationService.findCourts();
+
+        // then
+        assertThat(결과값).hasSameSizeAs(입력값);
+        입력값.iterator().forEachRemaining(
+            court -> assertThat(결과값).containsExactly(court)
+        );
     }
 }

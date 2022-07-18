@@ -3,50 +3,50 @@ package fashionable.simba.yanawacortapi.application;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fashionable.simba.yanawacortapi.domain.Court;
-import fashionable.simba.yanawacortapi.infra.CourtFeignClient;
-import feign.Response;
+import fashionable.simba.yanawacortapi.infra.ApiResponse;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Component
-public class CourtFeignApiTranslator implements CourtFeignApi {
+public class CourtFeignApiTranslator {
     private static final String LIST_PUBLIC_RESERVATION_SPORT = "ListPublicReservationSport";
     private static final Logger log = LoggerFactory.getLogger(CourtFeignApiTranslator.class);
-    private static final int MIN_SIZE = 1;
-    private static final int MAX_SIZE = 400;
-    private final CourtFeignClient courtFeignClient;
+
+    private static final String ROW = "row";
     private final ObjectMapper objectMapper;
 
-    public CourtFeignApiTranslator(CourtFeignClient courtFeignClient, ObjectMapper objectMapper) {
-        this.courtFeignClient = courtFeignClient;
+    public CourtFeignApiTranslator(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
 
-    @Override
-    public List<Court> findCourts() {
+    public boolean isStatusOk(ResponseEntity<Void> response) {
+        log.debug("Check api CourtFeignClient");
+        return HttpStatus.OK == response.getStatusCode();
+    }
+
+    public List<Court> getCourts(ResponseEntity<Map<String, Object>> response) {
         log.debug("Find api using CourtFeignClient");
-        try (Response response = courtFeignClient.findCourts(MIN_SIZE, MAX_SIZE)) {
-            JSONObject jsonObject = new JSONObject(response.body().toString())
-                .getJSONObject(LIST_PUBLIC_RESERVATION_SPORT);
-            return objectMapper.readValue(
-                jsonObject.getJSONArray("row").toString(), new TypeReference<>() {
+        try {
+            Map<String, Object> objectMap = (Map<String, Object>) Objects.requireNonNull(response.getBody()).get(LIST_PUBLIC_RESERVATION_SPORT);
+            JSONObject jsonObject = new JSONObject(objectMap);
+            List<ApiResponse> apiResponses = objectMapper.readValue(
+                jsonObject.getJSONArray(ROW).toString(),
+                new TypeReference<>() {
                 }
             );
-        } catch (IOException e) {
+            return apiResponses.stream().distinct().map(apiResponse -> new Court(null, apiResponse.getAreaName(), apiResponse.getPlaceName(), apiResponse.getImagePath())).collect(Collectors.toList());
+        } catch (Exception e) {
             log.warn("Failed to find list, message is {}", e.getMessage());
             throw new IllegalArgumentException();
         }
-    }
-
-    @Override
-    public boolean checkApi() {
-        log.debug("Check api CourtFeignClient");
-        return courtFeignClient.checkApi().status() == HttpStatus.OK.value();
     }
 }

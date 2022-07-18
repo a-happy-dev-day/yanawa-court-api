@@ -41,6 +41,8 @@ sonarqube {
         property "sonar.projectKey", "a-happy-dev-day_yanawa-court-api"
         property "sonar.organization", "a-happy-dev-day"
         property "sonar.host.url", "https://sonarcloud.io"
+        // jacoco 에서 생성된 xml 을 report 로 올리기 위한 설정
+        property "sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco.xml"
     }
 }
 

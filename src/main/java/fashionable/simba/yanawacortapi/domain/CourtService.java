@@ -18,10 +18,10 @@ public class CourtService {
         this.courtRepository = courtRepository;
     }
 
-    public void saveCourts(List<Court> courts) {
+    public List<Court> saveCourts(List<Court> courts) {
         log.debug("Save court in Repository");
         try {
-            courtRepository.saveAll(courts);
+            return courtRepository.saveAll(courts);
         } catch (Exception e) {
             log.debug("Failed to save court in Repository, Message is {}", e.getMessage());
             throw new IllegalStateException("저장에 실패했습니다.");

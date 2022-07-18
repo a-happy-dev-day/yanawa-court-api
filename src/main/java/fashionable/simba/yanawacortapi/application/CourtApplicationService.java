@@ -24,15 +24,15 @@ public class CourtApplicationService {
         this.courtFeignApi = courtFeignApi;
     }
 
-    public void saveCourts() {
-        log.debug("Save Courts using CourtFeignClient");
+    public List<Court> saveCourts() {
         log.debug("Check api CourtFeignClient");
         if (!courtFeignApiTranslator.isStatusOk(courtFeignApi.checkApi())) {
             log.warn("Failed to check Api");
             throw new IllegalStateException();
         }
+        log.debug("Save Courts using CourtFeignClient");
         List<Court> courts = courtFeignApiTranslator.getCourts(courtFeignApi.findCourts(MIN_SIZE, MAX_SIZE));
-        courtService.saveCourts(courts);
+        return courtService.saveCourts(courts);
     }
 
     public Court findCourt(UUID id) {

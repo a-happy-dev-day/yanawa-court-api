@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Component
@@ -35,7 +36,8 @@ public class CourtFeignApiTranslator {
     public List<Court> getCourts(ResponseEntity<Map<String, Object>> response) {
         log.debug("Find api using CourtFeignClient");
         try {
-            JSONObject jsonObject = new JSONObject((Map<String, Object>) response.getBody().get(LIST_PUBLIC_RESERVATION_SPORT));
+            Map<String, Object> objectMap = (Map<String, Object>) Objects.requireNonNull(response.getBody()).get(LIST_PUBLIC_RESERVATION_SPORT);
+            JSONObject jsonObject = new JSONObject(objectMap);
             List<ApiResponse> apiResponses = objectMapper.readValue(
                 jsonObject.getJSONArray(ROW).toString(),
                 new TypeReference<>() {

@@ -39,7 +39,11 @@ class SpringCourtApplicationServiceTest {
     @Test
     @DisplayName("공공데이터 Open API에서 정보를 가져오고 도메인 서비스에게 데이터를 저장하도록 요청합니다.")
     void test1() {
-        courtApplicationService.saveCourts();
+        List<Court> courts = courtApplicationService.saveCourts();
+        for (Court court : courts) {
+            System.out.println(court.getPlaceName());
+        }
+        assertThat(courts).isNotEmpty();
     }
 
 }

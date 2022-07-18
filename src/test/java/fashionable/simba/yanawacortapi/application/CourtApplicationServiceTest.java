@@ -118,7 +118,7 @@ class CourtApplicationServiceTest {
 
         // then
         verify(courtService).findCourts(지역);
-        assertThat(결과값.size()).isEqualTo(입력값.size());
+        assertThat(결과값).hasSameSizeAs(입력값);
         입력값.iterator().forEachRemaining(
             court -> assertThat(결과값).containsExactly(court)
         );
@@ -137,7 +137,7 @@ class CourtApplicationServiceTest {
 
         // then
         verify(courtService).findCourts(지역과이름);
-        assertThat(결과값.size()).isEqualTo(입력값.size());
+        assertThat(결과값).hasSameSizeAs(입력값);
         입력값.iterator().forEachRemaining(
             court -> assertThat(결과값).containsExactly(court)
         );
@@ -154,7 +154,7 @@ class CourtApplicationServiceTest {
         List<Court> 결과값 = courtApplicationService.findCourts();
 
         // then
-        assertThat(결과값.size()).isEqualTo(입력값.size());
+        assertThat(결과값).hasSameSizeAs(입력값);
         입력값.iterator().forEachRemaining(
             court -> assertThat(결과값).containsExactly(court)
         );

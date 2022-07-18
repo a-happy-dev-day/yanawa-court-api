@@ -74,8 +74,9 @@ class CourtControllerTest {
         when(courtApplicationService.findCourts(입력값)).thenReturn(코트장_리스트);
         ResponseEntity<List<CourtResponse>> 응답 = courtController.getCourtsContainsParam(입력값);
 
-        assertThat(Objects.requireNonNull(응답.getBody()).size())
-            .isEqualTo(코트장_리스트.size());
+        assertThat(Objects.requireNonNull(응답.getBody()))
+            .hasSameSizeAs(코트장_리스트);
+
     }
 
     @Test
@@ -99,8 +100,8 @@ class CourtControllerTest {
         when(courtApplicationService.findCourts()).thenReturn(코트장_리스트);
         ResponseEntity<List<CourtResponse>> 응답 = courtController.getCourtsContainsParam(입력값);
 
-        assertThat(Objects.requireNonNull(응답.getBody()).size())
-            .isEqualTo(코트장_리스트.size());
+        assertThat(Objects.requireNonNull(응답.getBody()))
+            .hasSameSizeAs(코트장_리스트);
     }
 
 }

@@ -33,7 +33,9 @@ class ApiResponseTest {
     @DisplayName("클래스가 다르면 다른 객체이다.")
     void test4() {
         // given
+        ApiResponse 성동구_응봉공원 = new ApiResponse(성동구, 응봉공원, "경로");
         Object otherClass = new Object();
+
         // when & then
         assertThat(성동구_응봉공원).isNotEqualTo(otherClass);
     }
@@ -45,7 +47,7 @@ class ApiResponseTest {
         String 다른공원 = "다른공원";
         ApiResponse 다른_공원 = new ApiResponse(성동구, 다른공원, "이미지 경로");
         // when & then
-        assertThat(성동구_응봉공원).isNotEqualTo(다른_공원);
+        assertThat(다른_공원).isNotEqualTo(성동구_응봉공원);
     }
 
     @Test
@@ -55,7 +57,7 @@ class ApiResponseTest {
         String 다른구 = "다른구";
         ApiResponse 다른_공원 = new ApiResponse(다른구, 응봉공원, "이미지 경로");
         // when & then
-        assertThat(성동구_응봉공원).isNotEqualTo(다른_공원);
+        assertThat(다른_공원).isNotEqualTo(성동구_응봉공원);
     }
 
     @Test

@@ -12,7 +12,7 @@ import static fashionable.simba.yanawacortapi.acceptance.CourtAcceptanceTemplate
 import static fashionable.simba.yanawacortapi.acceptance.CourtAcceptanceTemplate.데이터_조회;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CourtAcceptanceTest extends AcceptanceTest {
+class CourtAcceptanceTest extends AcceptanceTest {
 
     private static final String 성동구 = "성동구";
     private static final String 응봉공원 = "응봉공원";

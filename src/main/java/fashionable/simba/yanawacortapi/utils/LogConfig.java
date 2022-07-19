@@ -12,8 +12,8 @@ public class LogConfig {
     }
 
     @Bean
-    public FilterRegistrationBean filterRegistrationBean() {
-        return new FilterRegistrationBean(logFilter());
+    public FilterRegistrationBean<LoggingFilter> filterRegistrationBean() {
+        return new FilterRegistrationBean<>(logFilter());
     }
 
 }

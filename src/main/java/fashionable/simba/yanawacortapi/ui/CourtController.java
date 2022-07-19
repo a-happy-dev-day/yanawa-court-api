@@ -49,7 +49,7 @@ public class CourtController {
 
         return ResponseEntity.ok(courtApplicationService.findCourts(param).stream()
             .map(
-                court -> new CourtResponse(court.getId(), court.getAreaName() + court.getPlaceName(), court.getImagePath())
+                court -> new CourtResponse(court.getId(), String.format("%s %s", court.getAreaName(), court.getPlaceName()), court.getImagePath())
             ).collect(Collectors.toList())
         );
     }

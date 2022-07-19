@@ -7,6 +7,7 @@ import fashionable.simba.yanawacortapi.infra.ApiResponse;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import static fashionable.simba.yanawacortapi.utils.LogConfig.KEY;
 
 @Component
 public class CourtFeignApiTranslator {
@@ -29,12 +32,12 @@ public class CourtFeignApiTranslator {
     }
 
     public boolean isStatusOk(ResponseEntity<Void> response) {
-        log.debug("Check api CourtFeignClient");
+        log.debug("[{}] Check api CourtFeignClient", MDC.get(KEY));
         return HttpStatus.OK == response.getStatusCode();
     }
 
     public List<Court> getCourts(ResponseEntity<Map<String, Object>> response) {
-        log.debug("Find api using CourtFeignClient");
+        log.debug("[{}] Find api using CourtFeignClient", MDC.get(KEY));
         try {
             Map<String, Object> objectMap = (Map<String, Object>) Objects.requireNonNull(response.getBody()).get(LIST_PUBLIC_RESERVATION_SPORT);
             JSONObject jsonObject = new JSONObject(objectMap);
@@ -45,7 +48,7 @@ public class CourtFeignApiTranslator {
             );
             return apiResponses.stream().distinct().map(apiResponse -> new Court(null, apiResponse.getAreaName(), apiResponse.getPlaceName(), apiResponse.getImagePath())).collect(Collectors.toList());
         } catch (Exception e) {
-            log.warn("Failed to find list, message is {}", e.getMessage());
+            log.warn("[{}] Failed to find list, message is {}", MDC.get(KEY), e.getMessage());
             throw new IllegalArgumentException();
         }
     }

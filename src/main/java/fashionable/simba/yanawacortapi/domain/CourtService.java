@@ -4,6 +4,7 @@ import fashionable.simba.yanawacortapi.exception.NoCourtDataException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -19,6 +20,11 @@ public class CourtService {
     }
 
     public List<Court> saveCourts(List<Court> courts) {
+        if (courtRepository.count() > 0L) {
+            log.debug("Delete all in Repository");
+            courtRepository.deleteAllInBatch();
+        }
+
         log.debug("Save court in Repository");
         try {
             return courtRepository.saveAll(courts);

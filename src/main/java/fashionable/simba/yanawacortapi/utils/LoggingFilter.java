@@ -4,15 +4,13 @@ package fashionable.simba.yanawacortapi.utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
-import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.*;
 import java.io.IOException;
 import java.util.UUID;
 
-import static fashionable.simba.yanawacortapi.utils.LogConfig.*;
-
 public class LoggingFilter implements Filter {
+    private static final String KEY = "traceId";
     private static final Logger log = LoggerFactory.getLogger(LoggingFilter.class);
 
     @Override
@@ -23,7 +21,7 @@ public class LoggingFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         MDC.put(KEY, UUID.randomUUID().toString());
-        log.debug("[{}] Get log id", MDC.get(KEY));
+        log.debug("Get log id");
         chain.doFilter(request, response);
     }
 

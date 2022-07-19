@@ -2,16 +2,12 @@ package fashionable.simba.yanawacortapi.application;
 
 import fashionable.simba.yanawacortapi.domain.Court;
 import fashionable.simba.yanawacortapi.domain.CourtService;
-import fashionable.simba.yanawacortapi.utils.LogConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
-
-import static fashionable.simba.yanawacortapi.utils.LogConfig.*;
 
 @Service
 public class CourtApplicationService {
@@ -29,28 +25,28 @@ public class CourtApplicationService {
     }
 
     public List<Court> saveCourts() {
-        log.debug("[{}] Check api CourtFeignClient", MDC.get(KEY));
+        log.debug("Check api CourtFeignClient");
         if (!courtFeignApiTranslator.isStatusOk(courtFeignApi.checkApi())) {
-            log.warn("[{}] Failed to check Api", MDC.get(KEY));
+            log.warn("Failed to check Api");
             throw new IllegalStateException();
         }
-        log.debug("[{}] Save Courts using CourtFeignClient", MDC.get(KEY));
+        log.debug("Save Courts using CourtFeignClient");
         List<Court> courts = courtFeignApiTranslator.getCourts(courtFeignApi.findCourts(MIN_SIZE, MAX_SIZE));
         return courtService.saveCourts(courts);
     }
 
     public Court findCourt(UUID id) {
-        log.debug("[{}] Find courts by id, Id is {}", MDC.get(KEY), id);
+        log.debug("Find courts by id, Id is {}", id);
         return courtService.findCourt(id);
     }
 
     public List<Court> findCourts(String params) {
-        log.debug("[{}] Find courts by param, Param is {}", MDC.get(KEY), params);
+        log.debug("Find courts by param, Param is {}", params);
         return courtService.findCourts(params);
     }
 
     public List<Court> findCourts() {
-        log.debug("[{}] Find Courts", MDC.get(KEY));
+        log.debug("Find Courts");
         return courtService.findCourts();
     }
 }

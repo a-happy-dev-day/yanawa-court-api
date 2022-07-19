@@ -3,10 +3,8 @@ package fashionable.simba.yanawacortapi.ui;
 import fashionable.simba.yanawacortapi.application.CourtApplicationService;
 import fashionable.simba.yanawacortapi.domain.Court;
 import fashionable.simba.yanawacortapi.dto.CourtResponse;
-import fashionable.simba.yanawacortapi.utils.LogConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,8 +13,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-
-import static fashionable.simba.yanawacortapi.utils.LogConfig.*;
 
 @RestController
 public class CourtController {
@@ -30,7 +26,7 @@ public class CourtController {
 
     @PostMapping("/v1/api/courts")
     public ResponseEntity<Void> saveCourtList() {
-        log.debug("[{}] Request to save list", MDC.get(KEY));
+        log.debug("Request to save list");
         courtApplicationService.saveCourts();
         return ResponseEntity.created(URI.create("/v1/api/courts")).build();
     }
@@ -49,7 +45,7 @@ public class CourtController {
             throw new IllegalArgumentException("입력 값은 한글만 가능합니다.");
         }
 
-        log.debug("[{}] Request to find list, Param is {}", MDC.get(KEY), param);
+        log.debug("Request to find list, Param is {}", param);
 
         return ResponseEntity.ok(courtApplicationService.findCourts(param).stream()
             .map(
@@ -60,7 +56,7 @@ public class CourtController {
 
     @GetMapping("/v1/api/courts/{id}")
     public ResponseEntity<CourtResponse> getCourt(@PathVariable UUID id) {
-        log.debug("[{}] Request to find list, Id is {}", MDC.get(KEY), id);
+        log.debug("Request to find list, Id is {}", id);
         return ResponseEntity.ok(
             getCourtResponse(courtApplicationService.findCourt(id))
         );

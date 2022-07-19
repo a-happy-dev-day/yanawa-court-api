@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class LogConfig {
-    public static final String KEY = "traceId";
 
     private LoggingFilter logFilter() {
         return new LoggingFilter();

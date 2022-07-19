@@ -13,4 +13,8 @@ public interface CourtRepository {
 
     List<Court> findAll();
 
+    void deleteAllInBatch();
+
+    long count();
+
 }

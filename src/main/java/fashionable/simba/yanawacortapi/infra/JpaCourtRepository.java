@@ -21,4 +21,10 @@ public interface JpaCourtRepository extends JpaRepository<Court, Long>, CourtRep
 
     @Override
     List<Court> findAll();
+
+    @Override
+    void deleteAllInBatch();
+
+    @Override
+    long count();
 }

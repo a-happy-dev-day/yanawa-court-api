@@ -134,4 +134,23 @@ class CourtServiceTest {
         // then
         verify(courtRepository, atLeast(1)).findAll();
     }
+
+
+    @Test
+    @DisplayName("데이터가 하나 이상 존재하면 내부 데이터를 삭제하고 다시 저장한다.")
+    void test7() {
+        // given
+        List<Court> 코트장_리스트 = Arrays.asList(
+            new Court(null, "성동구", "응봉공원", null),
+            new Court(null, "양천구", "목동운동장>다목적구장", null)
+        );
+
+        //when
+        when(courtRepository.count()).thenReturn(3L);
+        courtService.saveCourts(코트장_리스트);
+
+        // then
+        verify(courtRepository, atLeast(1)).deleteAllInBatch();
+        verify(courtRepository, atLeast(1)).saveAll(코트장_리스트);
+    }
 }

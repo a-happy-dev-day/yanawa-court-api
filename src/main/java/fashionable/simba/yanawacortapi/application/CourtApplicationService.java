@@ -25,27 +25,28 @@ public class CourtApplicationService {
     }
 
     public List<Court> saveCourts() {
-        log.debug("Check api CourtFeignClient");
+        log.info("Check api CourtFeignClient");
         if (!courtFeignApiTranslator.isStatusOk(courtFeignApi.checkApi())) {
             log.warn("Failed to check Api");
             throw new IllegalStateException();
         }
-        log.debug("Save Courts using CourtFeignClient");
+        log.info("Save Courts using CourtFeignClient");
         List<Court> courts = courtFeignApiTranslator.getCourts(courtFeignApi.findCourts(MIN_SIZE, MAX_SIZE));
         return courtService.saveCourts(courts);
     }
 
     public Court findCourt(UUID id) {
-        log.debug("Find Courts Id, Id is {}", id);
+        log.info("Find courts by id, Id is {}", id);
         return courtService.findCourt(id);
     }
 
     public List<Court> findCourts(String params) {
-        log.debug("Find Courts Id, Param is {}", params);
+        log.info("Find courts by param, Param is {}", params);
         return courtService.findCourts(params);
     }
 
     public List<Court> findCourts() {
+        log.info("Find Courts");
         return courtService.findCourts();
     }
 }

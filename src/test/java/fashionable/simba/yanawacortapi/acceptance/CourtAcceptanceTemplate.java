@@ -4,7 +4,7 @@ import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 
-public class CourtAcceptanceTemplate {
+class CourtAcceptanceTemplate {
 
     public static ExtractableResponse<Response> 데이터_저장() {
         return RestAssured.given().log().all()

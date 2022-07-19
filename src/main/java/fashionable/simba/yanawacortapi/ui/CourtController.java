@@ -26,7 +26,7 @@ public class CourtController {
 
     @PostMapping("/v1/api/courts")
     public ResponseEntity<Void> saveCourtList() {
-        log.debug("Request to save list");
+        log.info("Request to save list");
         courtApplicationService.saveCourts();
         return ResponseEntity.created(URI.create("/v1/api/courts")).build();
     }
@@ -34,33 +34,38 @@ public class CourtController {
     @GetMapping("/v1/api/courts")
     public ResponseEntity<List<CourtResponse>> getCourtsContainsParam(@RequestParam(required = false, defaultValue = "") String param) {
         if (param == null || param.isBlank()) {
+            log.info("Request to find list");
             return ResponseEntity.ok(courtApplicationService.findCourts().stream()
                 .map(
-                    court -> new CourtResponse(court.getId(), court.getAreaName() + court.getPlaceName(), court.getImagePath())
+                    this::getCourtResponse
                 ).collect(Collectors.toList())
             );
         }
 
         if (!pattern.matcher(param).matches()) {
+            log.info("Failed to find list, Cause is not allowed param, Param is {}", param);
             throw new IllegalArgumentException("입력 값은 한글만 가능합니다.");
         }
 
-        log.debug("Request to find list, Param is {}", param);
+        log.info("Request to find list, Param is {}", param);
 
         return ResponseEntity.ok(courtApplicationService.findCourts(param).stream()
             .map(
-                court -> new CourtResponse(court.getId(), String.format("%s %s", court.getAreaName(), court.getPlaceName()), court.getImagePath())
+                this::getCourtResponse
             ).collect(Collectors.toList())
         );
     }
 
     @GetMapping("/v1/api/courts/{id}")
     public ResponseEntity<CourtResponse> getCourt(@PathVariable UUID id) {
-        log.debug("Request to find list, Id is {}", id);
-        Court court = courtApplicationService.findCourt(id);
+        log.info("Request to find list, Id is {}", id);
         return ResponseEntity.ok(
-            new CourtResponse(court.getId(), String.format("%s %s", court.getAreaName(), court.getPlaceName()), court.getImagePath())
+            getCourtResponse(courtApplicationService.findCourt(id))
         );
+    }
+
+    private CourtResponse getCourtResponse(Court court) {
+        return new CourtResponse(court.getId(), String.format("%s %s", court.getAreaName(), court.getPlaceName()), court.getImagePath());
     }
 
 }

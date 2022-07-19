@@ -22,32 +22,38 @@ public class CourtService {
     @Transactional
     public List<Court> saveCourts(List<Court> courts) {
         if (courtRepository.count() > 0L) {
-            log.debug("Delete all in Repository");
+            log.info("Delete all in Repository");
             courtRepository.deleteAllInBatch();
         }
 
-        log.debug("Save court in Repository");
+        log.info("Save court in Repository");
         try {
             return courtRepository.saveAll(courts);
         } catch (Exception e) {
-            log.debug("Failed to save court in Repository, Message is {}", e.getMessage());
+            log.info("Failed to save court in Repository, Message is {}", e.getMessage());
             throw new IllegalStateException("저장에 실패했습니다.");
         }
     }
 
     @Transactional(readOnly = true)
     public Court findCourt(UUID id) {
+        log.info("Find court by id in repository, Id is {}", id);
         return courtRepository.findById(id)
-            .orElseThrow(() -> new NoCourtDataException("코트장 정보가 존재하지 않습니다."));
+            .orElseThrow(() -> {
+                log.info("Failed to find court in Repository, Id is {}", id);
+                throw new NoCourtDataException("코트장 정보가 존재하지 않습니다.");
+            });
     }
 
     @Transactional(readOnly = true)
     public List<Court> findCourts(String params) {
+        log.info("Find courts by param in repository, Para is {}", params);
         return courtRepository.findCourtByAreaNameContainingOrPlaceNameContainingOrderByAreaNameAsc(params, params);
     }
 
     @Transactional(readOnly = true)
     public List<Court> findCourts() {
+        log.info("Find courts in repository");
         return courtRepository.findAll();
     }
 }

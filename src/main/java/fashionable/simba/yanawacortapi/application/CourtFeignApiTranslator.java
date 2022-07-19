@@ -29,12 +29,12 @@ public class CourtFeignApiTranslator {
     }
 
     public boolean isStatusOk(ResponseEntity<Void> response) {
-        log.debug("Check api CourtFeignClient");
+        log.info("Check api CourtFeignClient");
         return HttpStatus.OK == response.getStatusCode();
     }
 
     public List<Court> getCourts(ResponseEntity<Map<String, Object>> response) {
-        log.debug("Find api using CourtFeignClient");
+        log.info("Find api using CourtFeignClient");
         try {
             Map<String, Object> objectMap = (Map<String, Object>) Objects.requireNonNull(response.getBody()).get(LIST_PUBLIC_RESERVATION_SPORT);
             JSONObject jsonObject = new JSONObject(objectMap);

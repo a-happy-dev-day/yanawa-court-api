@@ -3,8 +3,10 @@ package fashionable.simba.yanawacortapi.ui;
 import fashionable.simba.yanawacortapi.application.CourtApplicationService;
 import fashionable.simba.yanawacortapi.domain.Court;
 import fashionable.simba.yanawacortapi.dto.CourtResponse;
+import fashionable.simba.yanawacortapi.utils.LogConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +15,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import static fashionable.simba.yanawacortapi.utils.LogConfig.*;
 
 @RestController
 public class CourtController {
@@ -26,7 +30,7 @@ public class CourtController {
 
     @PostMapping("/v1/api/courts")
     public ResponseEntity<Void> saveCourtList() {
-        log.debug("Request to save list");
+        log.debug("[{}] Request to save list", MDC.get(KEY));
         courtApplicationService.saveCourts();
         return ResponseEntity.created(URI.create("/v1/api/courts")).build();
     }
@@ -36,7 +40,7 @@ public class CourtController {
         if (param == null || param.isBlank()) {
             return ResponseEntity.ok(courtApplicationService.findCourts().stream()
                 .map(
-                    court -> new CourtResponse(court.getId(), court.getAreaName() + court.getPlaceName(), court.getImagePath())
+                    this::getCourtResponse
                 ).collect(Collectors.toList())
             );
         }
@@ -45,22 +49,25 @@ public class CourtController {
             throw new IllegalArgumentException("입력 값은 한글만 가능합니다.");
         }
 
-        log.debug("Request to find list, Param is {}", param);
+        log.debug("[{}] Request to find list, Param is {}", MDC.get(KEY), param);
 
         return ResponseEntity.ok(courtApplicationService.findCourts(param).stream()
             .map(
-                court -> new CourtResponse(court.getId(), String.format("%s %s", court.getAreaName(), court.getPlaceName()), court.getImagePath())
+                this::getCourtResponse
             ).collect(Collectors.toList())
         );
     }
 
     @GetMapping("/v1/api/courts/{id}")
     public ResponseEntity<CourtResponse> getCourt(@PathVariable UUID id) {
-        log.debug("Request to find list, Id is {}", id);
-        Court court = courtApplicationService.findCourt(id);
+        log.debug("[{}] Request to find list, Id is {}", MDC.get(KEY), id);
         return ResponseEntity.ok(
-            new CourtResponse(court.getId(), String.format("%s %s", court.getAreaName(), court.getPlaceName()), court.getImagePath())
+            getCourtResponse(courtApplicationService.findCourt(id))
         );
+    }
+
+    private CourtResponse getCourtResponse(Court court) {
+        return new CourtResponse(court.getId(), String.format("%s %s", court.getAreaName(), court.getPlaceName()), court.getImagePath());
     }
 
 }

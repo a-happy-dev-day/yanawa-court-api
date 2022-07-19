@@ -19,6 +19,7 @@ public class CourtService {
         this.courtRepository = courtRepository;
     }
 
+    @Transactional
     public List<Court> saveCourts(List<Court> courts) {
         if (courtRepository.count() > 0L) {
             log.debug("Delete all in Repository");
@@ -34,15 +35,18 @@ public class CourtService {
         }
     }
 
+    @Transactional(readOnly = true)
     public Court findCourt(UUID id) {
         return courtRepository.findById(id)
             .orElseThrow(() -> new NoCourtDataException("코트장 정보가 존재하지 않습니다."));
     }
 
+    @Transactional(readOnly = true)
     public List<Court> findCourts(String params) {
         return courtRepository.findCourtByAreaNameContainingOrPlaceNameContainingOrderByAreaNameAsc(params, params);
     }
 
+    @Transactional(readOnly = true)
     public List<Court> findCourts() {
         return courtRepository.findAll();
     }
